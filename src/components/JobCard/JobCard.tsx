@@ -23,6 +23,10 @@ export const JobCard: React.FC<JobCardProps> = ({ job, onPress, onApply }) => {
   const formattedLocation = job.locations?.join(', ') || 'Remote';
   const plainDescription = job.description?.replace(/<[^>]+>/g, '') || '';
 
+  const tagsString = job.tags && job.tags.length > 0 
+    ? job.tags.join(', ') 
+    : '';
+
   const handleSave = () => {
     if (isSaved) removeJob(job.id);
     else saveJob(job);
@@ -70,10 +74,12 @@ export const JobCard: React.FC<JobCardProps> = ({ job, onPress, onApply }) => {
         )}
       </View>
 
-      {/* --- DESCRIPTION PREVIEW --- */}
-      <Text style={[styles.description, { color: colors.textSecondary }]} numberOfLines={2}>
-        {plainDescription}
-      </Text>
+      {/* --- TAGS --- */}
+      {tagsString ? (
+        <Text style={[styles.tags, { color: colors.textSecondary }]} numberOfLines={2}>
+          Tags: {tagsString}
+        </Text>
+      ) : null}
 
       {/* --- NEW FOOTER: Salary/Location Left | Apply Right --- */}
       <View style={[styles.footer, { borderTopColor: colors.border }]}>

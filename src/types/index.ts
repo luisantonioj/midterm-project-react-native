@@ -12,6 +12,8 @@ export interface Job {
   salaryMin?: number;
   salaryMax?: number;
   currency?: string;
+  salary: string;
+  location?: string
   locations?: string[];
   tags?: string[];
   description?: string;
