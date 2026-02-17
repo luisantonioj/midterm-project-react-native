@@ -8,10 +8,7 @@ import { JobCard, ThemeToggle } from '../components';
 import { Job } from '../types';
 import { RootStackParamList } from '../navigation/types';
 
-type SavedJobsScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  'SavedJobs'
->;
+type SavedJobsScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
 export const SavedJobsScreen: React.FC = () => {
   const navigation = useNavigation<SavedJobsScreenNavigationProp>();

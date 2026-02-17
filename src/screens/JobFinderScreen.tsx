@@ -14,12 +14,9 @@ import { useJobsAPI } from '../hooks/useJobsAPI';
 import { useSearch } from '../hooks/useSearch';
 import { SearchBar, JobCard, ThemeToggle } from '../components';
 import { Job } from '../types';
-import { RootStackParamList } from '../navigation/types';
+import { RootStackParamList, MainTabParamList } from '../navigation/types';
 
-type JobFinderScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  'JobFinder'
->;
+type JobFinderScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
 export const JobFinderScreen: React.FC = () => {
   const navigation = useNavigation<JobFinderScreenNavigationProp>();

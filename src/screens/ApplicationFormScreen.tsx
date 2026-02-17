@@ -91,7 +91,7 @@ export const ApplicationFormScreen: React.FC = () => {
 
               // Navigate based on where the user came from
               if (fromSaved) {
-                navigation.navigate('JobFinder');
+                navigation.navigate('MainTabs');
               } else {
                 navigation.goBack();
               }
