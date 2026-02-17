@@ -81,11 +81,6 @@ export const JobDetailsScreen: React.FC = () => {
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        
-        {/* Company Name */}
-        <Text style={[styles.companyName, { color: colors.text }]}>
-          {job.company}
-        </Text>
 
         {/* Logo */}
         <View style={styles.logoContainer}>
@@ -94,6 +89,11 @@ export const JobDetailsScreen: React.FC = () => {
             style={styles.logo} 
           />
         </View>
+
+        {/* Company Name */}
+        <Text style={[styles.title, { color: colors.text }]}>
+          {job.title}
+        </Text>
 
         {/* Salary */}
         <Text style={[styles.salary, { color: colors.success }]}>

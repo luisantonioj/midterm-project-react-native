@@ -9,15 +9,9 @@ export const styles = StyleSheet.create({
   },
   
   // --- Header Section ---
-  companyName: {
-    fontSize: 20,
-    fontWeight: '700',
-    textAlign: 'center',
-    marginTop: 20,
-    marginBottom: 16,
-  },
   logoContainer: {
     alignItems: 'center',
+    marginTop: 30,
     marginBottom: 12,
   },
   logo: {
@@ -25,6 +19,13 @@ export const styles = StyleSheet.create({
     height: 80,
     borderRadius: 16,
     backgroundColor: '#f4f4f4',
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: '500',
+    textAlign: 'center',
+    marginTop: 5,
+    marginBottom: 5,
   },
   salary: {
     fontSize: 18,
