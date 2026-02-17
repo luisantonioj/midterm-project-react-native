@@ -3,18 +3,18 @@ import {
   View,
   Text,
   FlatList,
-  StyleSheet,
   ActivityIndicator,
   RefreshControl,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useTheme } from '../contexts/ThemeContext';
-import { useJobsAPI } from '../hooks/useJobsAPI';
-import { useSearch } from '../hooks/useSearch';
-import { SearchBar, JobCard, ThemeToggle } from '../components';
-import { Job } from '../types';
-import { RootStackParamList, MainTabParamList } from '../navigation/types';
+import { useTheme } from '../../contexts/ThemeContext';
+import { useJobsAPI } from '../../hooks/useJobsAPI';
+import { useSearch } from '../../hooks/useSearch';
+import { SearchBar, JobCard, ThemeToggle } from '../../components';
+import { Job } from '../../types';
+import { RootStackParamList } from '../../navigation/types';
+import { styles } from './JobFinderScreen.styles';
 
 type JobFinderScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
@@ -97,56 +97,3 @@ export const JobFinderScreen: React.FC = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingTop: 60,
-    paddingBottom: 16,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-  },
-  content: {
-    flex: 1,
-    paddingHorizontal: 16,
-  },
-  resultsCount: {
-    fontSize: 14,
-    marginBottom: 12,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    marginTop: 12,
-    fontSize: 16,
-  },
-  errorContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 32,
-  },
-  errorText: {
-    fontSize: 16,
-    textAlign: 'center',
-  },
-  emptyContainer: {
-    paddingVertical: 32,
-    alignItems: 'center',
-  },
-  emptyText: {
-    fontSize: 16,
-    textAlign: 'center',
-  },
-});

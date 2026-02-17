@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { JobFinderScreen } from '../screens/JobFinderScreen';
-import { SavedJobsScreen } from '../screens/SavedJobsScreen';
+import { JobFinderScreen } from '../screens/JobFinderScreen/JobFinderScreen';
+import { SavedJobsScreen } from '../screens/SavedJobsScreen/SavedJobsScreen';
 import { MainTabParamList } from './types';
 import { useTheme } from '../contexts/ThemeContext';
 

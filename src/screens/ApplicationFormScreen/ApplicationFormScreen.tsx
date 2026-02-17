@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
@@ -10,10 +9,11 @@ import {
 } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useTheme } from '../contexts/ThemeContext';
-import { Button, Input } from '../components';
-import { validateApplicationForm } from '../utils/validation';
-import { RootStackParamList } from '../navigation/types';
+import { useTheme } from '../../contexts/ThemeContext';
+import { Button, Input } from '../../components';
+import { validateApplicationForm } from '../../utils/validation';
+import { RootStackParamList } from '../../navigation/types';
+import { styles } from './ApplicationFormScreen.styles';
 
 type ApplicationFormRouteProp = RouteProp<RootStackParamList, 'ApplicationForm'>;
 type ApplicationFormNavigationProp = StackNavigationProp<
@@ -181,46 +181,3 @@ export const ApplicationFormScreen: React.FC = () => {
     </KeyboardAvoidingView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scrollView: {
-    flex: 1,
-  },
-  scrollContent: {
-    paddingTop: 60,
-    paddingHorizontal: 16,
-    paddingBottom: 32,
-  },
-  header: {
-    marginBottom: 24,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  jobTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginBottom: 4,
-  },
-  company: {
-    fontSize: 16,
-  },
-  form: {
-    flex: 1,
-  },
-  textArea: {
-    minHeight: 120,
-    textAlignVertical: 'top',
-  },
-  buttonContainer: {
-    marginTop: 8,
-  },
-  cancelButton: {
-    marginTop: 12,
-  },
-});
