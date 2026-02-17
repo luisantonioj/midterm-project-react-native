@@ -31,6 +31,13 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '700',
     textAlign: 'center',
+    marginBottom: 5,
+  },
+  locations: {
+    fontSize: 16,
+    fontWeight: '400',
+    textAlign: 'center',
+    marginTop: 10,
     marginBottom: 16,
   },
   

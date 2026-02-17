@@ -100,6 +100,11 @@ export const JobDetailsScreen: React.FC = () => {
           {formattedSalary}
         </Text>
 
+        {/* Location */}
+        <Text style={[styles.locations, { color: colors.text }]}>
+          {job.locations || 'Location not specified'}
+        </Text>
+
         {/* Badges */}
         <View style={styles.badgesRow}>
           {[job.jobType, job.workModel, job.seniorityLevel].filter(Boolean).map((badge, index) => (
