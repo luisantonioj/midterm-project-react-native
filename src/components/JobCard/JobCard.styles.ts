@@ -38,12 +38,20 @@ export const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '500',
   },
-  saveIconBtn: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+  saveButton: {
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 20,       
+    borderWidth: 1,
+    borderColor: '#ddd', 
     alignItems: 'center',
     justifyContent: 'center',
+    marginLeft: 8,
+  },
+  saveBtnText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#666',          // Dark grey text when not saved
   },
   badgeRow: {
     flexDirection: 'row',

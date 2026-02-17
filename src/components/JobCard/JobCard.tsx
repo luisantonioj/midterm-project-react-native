@@ -53,10 +53,15 @@ export const JobCard: React.FC<JobCardProps> = ({ job, onPress, onApply }) => {
           </Text>
         </View>
         <TouchableOpacity 
-          style={[styles.saveIconBtn, isSaved && { backgroundColor: colors.inputBackground }]}
+          style={[
+            styles.saveButton, 
+            isSaved && { backgroundColor: colors.primary, borderColor: colors.primary }
+          ]}
           onPress={handleSave}
         >
-          <Text style={{ fontSize: 18 }}>{isSaved ? '💙' : '🤍'}</Text>
+          <Text style={[styles.saveBtnText, isSaved && { color: '#FFF' }]}>
+            {isSaved ? 'Saved' : 'Save'}
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -65,6 +70,11 @@ export const JobCard: React.FC<JobCardProps> = ({ job, onPress, onApply }) => {
         {job.jobType && (
           <View style={[styles.badge, { backgroundColor: colors.inputBackground }]}>
             <Text style={[styles.badgeText, { color: colors.textSecondary }]}>{job.jobType}</Text>
+          </View>
+        )}
+        {job.workModel && (
+          <View style={[styles.badge, { backgroundColor: colors.inputBackground }]}>
+            <Text style={[styles.badgeText, { color: colors.textSecondary }]}>{job.workModel}</Text>
           </View>
         )}
         {job.seniorityLevel && (
