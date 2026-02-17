@@ -25,12 +25,20 @@ export const RootNavigator: React.FC = () => {
         <Stack.Screen 
           name="JobDetails" 
           component={JobDetailsScreen} 
-          options={{ 
+          options={({ route }) => ({ 
             headerShown: true, 
-            title: 'Job Details',
-            headerStyle: { backgroundColor: colors.background },
+            title: route.params.job.company,
+            headerStyle: { 
+              backgroundColor: colors.background,
+              shadowColor: 'transparent', 
+              elevation: 0,
+            },
             headerTintColor: colors.text,
-          }} 
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+            headerBackTitleVisible: false,
+          })} 
         />
         
         <Stack.Screen
