@@ -77,7 +77,7 @@ export const JobCard: React.FC<JobCardProps> = ({ job, onPress, onApply }) => {
       {/* --- TAGS --- */}
       {tagsString ? (
         <Text style={[styles.tags, { color: colors.textSecondary }]} numberOfLines={2}>
-          Tags: {tagsString}
+          Key Skills: {tagsString}
         </Text>
       ) : null}
 

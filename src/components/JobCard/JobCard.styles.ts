@@ -69,7 +69,6 @@ export const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 18,
     marginBottom: 16,
-    fontStyle: 'italic', // Optional: makes tags distinct from description
   },
   footer: {
     flexDirection: 'row',
