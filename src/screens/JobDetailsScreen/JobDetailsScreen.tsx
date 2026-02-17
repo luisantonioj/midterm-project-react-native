@@ -21,31 +21,33 @@ const cleanHtml = (html: string) => {
 };
 
 // 2. Helper to extract specific sections based on the headers
-const getSectionContent = (html: string, section: 'description' | 'requirements') => {
+const getSectionContent = (html: string, section: 'description' | 'requirements' | 'benefits') => {
   if (!html) return 'No information available.';
 
-  // This Regex looks for <h3>...Keyword...</h3>, captures everything after it, 
-  // until it hits the next <h3> OR the end of the string ($).
-  // [\s\S]*? ensures we capture newlines too.
+  // Regex patterns for each section
   const descRegex = /<h3[^>]*>.*?Description.*?<\/h3>([\s\S]*?)(?=<h3|$)/i;
   const reqRegex = /<h3[^>]*>.*?Requirements.*?<\/h3>([\s\S]*?)(?=<h3|$)/i;
+  const benRegex = /<h3[^>]*>.*?Benefits.*?<\/h3>([\s\S]*?)(?=<h3|$)/i;
 
   if (section === 'description') {
     const match = html.match(descRegex);
-    if (match && match[1]) {
-      return cleanHtml(match[1]);
-    }
-    // Fallback: If no "Description" header exists, take everything BEFORE "Requirements"
+    if (match && match[1]) return cleanHtml(match[1]);
+    
+    // Fallback: take everything before "Requirements" if no header found
     const splitByReq = html.split(/<h3[^>]*>.*?Requirements/i);
     return cleanHtml(splitByReq[0]);
   }
 
   if (section === 'requirements') {
     const match = html.match(reqRegex);
-    if (match && match[1]) {
-      return cleanHtml(match[1]);
-    }
-    return 'No specific requirements listed for this role.';
+    if (match && match[1]) return cleanHtml(match[1]);
+    return 'No specific requirements listed.';
+  }
+
+  if (section === 'benefits') {
+    const match = html.match(benRegex);
+    if (match && match[1]) return cleanHtml(match[1]);
+    return 'No specific benefits listed.';
   }
 
   return '';
@@ -58,7 +60,7 @@ export const JobDetailsScreen: React.FC = () => {
   const { job } = route.params;
   const { saveJob, removeJob, isJobSaved } = useJobs();
 
-  const [activeTab, setActiveTab] = useState<'description' | 'requirements'>('description');
+  const [activeTab, setActiveTab] = useState<'description' | 'requirements' | 'benefits'>('description');
 
   const isSaved = isJobSaved(job.id);
 
@@ -75,7 +77,6 @@ export const JobDetailsScreen: React.FC = () => {
     ? `${job.currency} ${job.salaryMin.toLocaleString()} - ${job.salaryMax.toLocaleString()}`
     : job.salary || 'Salary not disclosed';
 
-  // 3. Dynamically get content based on the active tab
   const displayedContent = getSectionContent(job.description || '', activeTab);
 
   return (
@@ -137,6 +138,18 @@ export const JobDetailsScreen: React.FC = () => {
               { color: activeTab === 'requirements' ? colors.primary : colors.textSecondary }
             ]}>
               Requirements
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={[styles.tabButton, activeTab === 'benefits' && { borderBottomColor: colors.primary }]}
+            onPress={() => setActiveTab('benefits')}
+          >
+            <Text style={[
+              styles.tabText, 
+              { color: activeTab === 'benefits' ? colors.primary : colors.textSecondary }
+            ]}>
+              Benefits
             </Text>
           </TouchableOpacity>
         </View>
