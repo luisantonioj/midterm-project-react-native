@@ -7,6 +7,7 @@ import { useJobs } from '../../contexts/JobContext';
 import { Button } from '../../components';
 import { RootStackParamList } from '../../navigation/types';
 import { styles } from './JobDetailsScreen.styles';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 // 1. Helper to clean HTML tags from a string
 const cleanHtml = (html: string) => {
@@ -78,6 +79,8 @@ export const JobDetailsScreen: React.FC = () => {
     : job.salary || 'Salary not disclosed';
 
   const displayedContent = getSectionContent(job.description || '', activeTab);
+
+  const insets = useSafeAreaInsets();
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -181,7 +184,7 @@ export const JobDetailsScreen: React.FC = () => {
       </ScrollView>
 
       {/* Footer */}
-      <View style={[styles.footer, { backgroundColor: colors.background, borderTopColor: colors.border }]}>
+      <View style={[styles.footer, { backgroundColor: colors.background, borderTopColor: colors.border, paddingBottom: insets.bottom + 5 }]}>
         <Button 
           title={isSaved ? "Saved" : "Save Job"} 
           onPress={handleSaveToggle}
