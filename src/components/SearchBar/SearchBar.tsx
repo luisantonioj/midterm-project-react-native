@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
-import { useTheme } from '../contexts/ThemeContext';
+import { View, TextInput } from 'react-native';
+import { useTheme } from '../../contexts/ThemeContext';
+import { styles } from './SearchBar.styles';
 
 interface SearchBarProps {
   value: string;
@@ -34,16 +35,3 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginBottom: 16,
-  },
-  input: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    borderWidth: 1,
-    fontSize: 16,
-  },
-});

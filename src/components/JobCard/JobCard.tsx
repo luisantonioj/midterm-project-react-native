@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Job } from '../types';
-import { Button } from './Button';
-import { useTheme } from '../contexts/ThemeContext';
-import { useJobs } from '../contexts/JobContext';
+import { View, Text } from 'react-native';
+import { Job } from '../../types';
+import { Button } from '../Button/Button';
+import { useTheme } from '../../contexts/ThemeContext';
+import { useJobs } from '../../contexts/JobContext';
+import { styles } from './JobCard.styles';
 
 interface JobCardProps {
   job: Job;
@@ -83,41 +84,3 @@ export const JobCard: React.FC<JobCardProps> = ({ job, onApply, showRemove = fal
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  card: {
-    padding: 16,
-    marginBottom: 16,
-    borderRadius: 12,
-    borderWidth: 1,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 4,
-  },
-  company: {
-    fontSize: 16,
-    marginBottom: 12,
-  },
-  detailsContainer: {
-    marginBottom: 12,
-  },
-  detail: {
-    fontSize: 14,
-    marginBottom: 4,
-  },
-  description: {
-    fontSize: 14,
-    marginBottom: 16,
-    lineHeight: 20,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    gap: 8,
-  },
-  button: {
-    flex: 1,
-  },
-});
