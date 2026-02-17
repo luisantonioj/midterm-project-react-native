@@ -1,15 +1,20 @@
 // Type definitions for the Job Finder App
 
 export interface Job {
-  id: string; // UUID generated locally
+  id: string;
   title: string;
   company: string;
-  salary?: string;
-  location?: string;
+  companyLogo?: string;
+  mainCategory?: string;
+  jobType?: string;
+  workModel?: string;
+  seniorityLevel?: string;
+  salaryMin?: number;
+  salaryMax?: number;
+  currency?: string;
+  locations?: string[];
+  tags?: string[];
   description?: string;
-  requirements?: string[];
-  type?: string; // Full-time, Part-time, Contract, etc.
-  postedDate?: string;
   isSaved?: boolean;
 }
 
