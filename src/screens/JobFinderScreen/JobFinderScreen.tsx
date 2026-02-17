@@ -24,6 +24,10 @@ export const JobFinderScreen: React.FC = () => {
   const { jobs, loading, error, refreshJobs } = useJobsAPI();
   const { searchQuery, setSearchQuery, filteredJobs } = useSearch(jobs);
 
+  const handlePressJob = (job: Job) => {
+    navigation.navigate('JobDetails', { job });
+  };
+
   const handleApply = (job: Job) => {
     navigation.navigate('ApplicationForm', { job, fromSaved: false });
   };
@@ -79,7 +83,11 @@ export const JobFinderScreen: React.FC = () => {
           <FlatList
             data={filteredJobs}
             renderItem={({ item }) => (
-              <JobCard job={item} onApply={handleApply} />
+              <JobCard 
+                job={item} 
+                onPress={() => handlePressJob(item)} // Pass the press handler here
+                // onApply={() => handleApply(item)} 
+              />
             )}
             keyExtractor={(item) => item.id}
             ListEmptyComponent={renderEmptyComponent}

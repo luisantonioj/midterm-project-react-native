@@ -6,6 +6,7 @@ export type RootStackParamList = {
     job: Job;
     fromSaved: boolean;
   };
+  JobDetails: { job: Job };
 };
 
 export type MainTabParamList = {

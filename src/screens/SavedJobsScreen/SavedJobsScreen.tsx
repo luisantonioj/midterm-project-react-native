@@ -16,6 +16,10 @@ export const SavedJobsScreen: React.FC = () => {
   const { colors } = useTheme();
   const { savedJobs } = useJobs();
 
+  const handlePressJob = (job: Job) => {
+    navigation.navigate('JobDetails', { job });
+  };
+
   const handleApply = (job: Job) => {
     navigation.navigate('ApplicationForm', { job, fromSaved: true });
   };
@@ -47,7 +51,12 @@ export const SavedJobsScreen: React.FC = () => {
         <FlatList
           data={savedJobs}
           renderItem={({ item }) => (
-            <JobCard job={item} onApply={handleApply} showRemove />
+            <JobCard 
+              job={item} 
+              onPress={() => handlePressJob(item)} // Pass the press handler here
+              // onApply={() => handleApply(item)} 
+              // showRemove 
+            />
           )}
           keyExtractor={(item) => item.id}
           ListEmptyComponent={renderEmptyComponent}

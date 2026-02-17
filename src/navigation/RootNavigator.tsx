@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { MainTabNavigator } from './MainTabNavigator';
 import { ApplicationFormScreen } from '../screens/ApplicationFormScreen/ApplicationFormScreen';
+import { JobDetailsScreen } from '../screens/JobDetailsScreen/JobDetailsScreen'; // Import new screen
 import { RootStackParamList } from './types';
 import { useTheme } from '../contexts/ThemeContext';
 
@@ -20,12 +21,22 @@ export const RootNavigator: React.FC = () => {
         }}
       >
         <Stack.Screen name="MainTabs" component={MainTabNavigator} />
+        
+        <Stack.Screen 
+          name="JobDetails" 
+          component={JobDetailsScreen} 
+          options={{ 
+            headerShown: true, 
+            title: 'Job Details',
+            headerStyle: { backgroundColor: colors.background },
+            headerTintColor: colors.text,
+          }} 
+        />
+        
         <Stack.Screen
           name="ApplicationForm"
           component={ApplicationFormScreen}
-          options={{
-            presentation: 'modal',
-          }}
+          options={{ presentation: 'modal' }}
         />
       </Stack.Navigator>
     </NavigationContainer>

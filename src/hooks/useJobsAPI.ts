@@ -39,20 +39,20 @@ export const useJobsAPI = (): UseJobsReturn => {
 
       // 3. Map the specific fields from your sample to your App's Job type
       const mappedJobs = apiJobs.map((job: any) => ({
-        id: generateUUID(), // Generate ID as required
+        id: generateUUID(),
         title: job.title || 'Untitled Role',
-        company: job.companyName || 'Unknown Company', // Sample says 'companyName'
-        
-        // Sample has 'locations' as an array ["Raleigh"], we join them or take the first one
-        location: Array.isArray(job.locations) ? job.locations.join(', ') : (job.locations || 'Remote'),
-        
-        // Format salary from min/max if available
-        salary: (job.minSalary && job.maxSalary) 
-          ? `${job.currency} ${job.minSalary} - ${job.maxSalary}` 
-          : 'Salary not disclosed',
-          
-        description: job.description || 'No description available',
-        type: job.jobType || 'Full-time', // Sample says 'jobType'
+        company: job.companyName || 'Unknown Company',
+        companyLogo: job.companyLogo, // Map the logo
+        mainCategory: job.mainCategory,
+        jobType: job.jobType,
+        workModel: job.workModel,
+        seniorityLevel: job.seniorityLevel,
+        salaryMin: job.minSalary,
+        salaryMax: job.maxSalary,
+        currency: job.currency,
+        locations: job.locations || [], // Ensure it's an array
+        tags: job.tags || [],
+        description: job.description || '',
         isSaved: false,
       }));
 
@@ -61,11 +61,11 @@ export const useJobsAPI = (): UseJobsReturn => {
     } catch (err) {
       console.error('Fetch error:', err);
       // Fallback Mock Data just in case
-      setJobs([
-        { id: generateUUID(), title: 'Head of Sales', company: 'Celonis', location: 'Raleigh', isSaved: false },
-        { id: generateUUID(), title: 'Staff Engineer', company: 'Blacksky', location: 'Worldwide', isSaved: false },
-        { id: generateUUID(), title: 'Part-Time CFO', company: 'Simscale', location: 'Munich', isSaved: false },
-      ]);
+      // setJobs([
+      //   { id: generateUUID(), title: 'Head of Sales', company: 'Celonis', location: 'Raleigh', isSaved: false },
+      //   { id: generateUUID(), title: 'Staff Engineer', company: 'Blacksky', location: 'Worldwide', isSaved: false },
+      //   { id: generateUUID(), title: 'Part-Time CFO', company: 'Simscale', location: 'Munich', isSaved: false },
+      // ]);
       // Optional: Set error if you want to show the red warning
       // setError('Failed to load jobs');
     } finally {
