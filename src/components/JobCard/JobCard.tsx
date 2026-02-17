@@ -7,23 +7,20 @@ import { styles } from './JobCard.styles';
 
 interface JobCardProps {
   job: Job;
-  onPress: () => void; // Used to open the modal later
+  onPress: () => void; // Open Details Modal
+  onApply: () => void; // Direct Apply Action
 }
 
-export const JobCard: React.FC<JobCardProps> = ({ job, onPress }) => {
+export const JobCard: React.FC<JobCardProps> = ({ job, onPress, onApply }) => {
   const { colors } = useTheme();
   const { saveJob, removeJob, isJobSaved } = useJobs();
   const isSaved = isJobSaved(job.id);
 
-  // Helper to format salary
   const formattedSalary = job.salaryMin && job.salaryMax
     ? `${job.currency} ${job.salaryMin.toLocaleString()} - ${job.salaryMax.toLocaleString()}`
     : 'Salary not disclosed';
 
-  // Helper to format location
   const formattedLocation = job.locations?.join(', ') || 'Remote';
-
-  // Helper to strip HTML tags for the preview
   const plainDescription = job.description?.replace(/<[^>]+>/g, '') || '';
 
   const handleSave = () => {
@@ -48,61 +45,53 @@ export const JobCard: React.FC<JobCardProps> = ({ job, onPress }) => {
             {job.title}
           </Text>
           <Text style={[styles.company, { color: colors.textSecondary }]}>
-            {job.company} • {job.mainCategory}
+            {job.company}
           </Text>
         </View>
         <TouchableOpacity 
-          style={[styles.saveButton, isSaved && { backgroundColor: colors.primary }]}
+          style={[styles.saveIconBtn, isSaved && { backgroundColor: colors.inputBackground }]}
           onPress={handleSave}
         >
-          <Text style={[styles.saveText, isSaved && { color: '#FFF' }]}>
-            {isSaved ? 'Saved' : 'Save'}
-          </Text>
+          <Text style={{ fontSize: 18 }}>{isSaved ? '💙' : '🤍'}</Text>
         </TouchableOpacity>
       </View>
 
-      {/* --- BADGES ROW: Work Model, Job Type, Seniority --- */}
+      {/* --- BADGES ROW --- */}
       <View style={styles.badgeRow}>
-        {job.workModel && (
-          <View style={[styles.badge, { backgroundColor: colors.inputBackground }]}>
-            <Text style={[styles.badgeText, { color: colors.textSecondary }]}>🏠 {job.workModel}</Text>
-          </View>
-        )}
         {job.jobType && (
           <View style={[styles.badge, { backgroundColor: colors.inputBackground }]}>
-            <Text style={[styles.badgeText, { color: colors.textSecondary }]}>💼 {job.jobType}</Text>
+            <Text style={[styles.badgeText, { color: colors.textSecondary }]}>{job.jobType}</Text>
           </View>
         )}
         {job.seniorityLevel && (
           <View style={[styles.badge, { backgroundColor: colors.inputBackground }]}>
-            <Text style={[styles.badgeText, { color: colors.textSecondary }]}>⭐ {job.seniorityLevel}</Text>
+            <Text style={[styles.badgeText, { color: colors.textSecondary }]}>{job.seniorityLevel}</Text>
           </View>
         )}
       </View>
 
-      {/* --- INFO ROW: Salary & Location --- */}
-      <View style={styles.infoRow}>
-        <Text style={[styles.infoText, { color: colors.textSecondary }]}>📍 {formattedLocation}</Text>
-        <Text style={[styles.infoText, { color: colors.success }]}>💰 {formattedSalary}</Text>
-      </View>
-
       {/* --- DESCRIPTION PREVIEW --- */}
-      <Text style={[styles.description, { color: colors.textSecondary }]} numberOfLines={3}>
+      <Text style={[styles.description, { color: colors.textSecondary }]} numberOfLines={2}>
         {plainDescription}
       </Text>
 
-      {/* --- TAGS FOOTER --- */}
-      <View style={styles.tagsContainer}>
-        {job.tags?.slice(0, 3).map((tag, index) => (
-          <Text key={index} style={[styles.tag, { color: colors.primary, borderColor: colors.primary }]}>
-            #{tag}
+      {/* --- NEW FOOTER: Salary/Location Left | Apply Right --- */}
+      <View style={[styles.footer, { borderTopColor: colors.border }]}>
+        <View style={styles.footerInfo}>
+          <Text style={[styles.salaryText, { color: colors.text }]}>
+            {formattedSalary}
           </Text>
-        ))}
-        {(job.tags?.length || 0) > 3 && (
-          <Text style={[styles.tag, { color: colors.textSecondary, borderColor: colors.border }]}>
-            +{job.tags!.length - 3} more
+          <Text style={[styles.locationText, { color: colors.textSecondary }]}>
+            📍 {formattedLocation}
           </Text>
-        )}
+        </View>
+
+        <TouchableOpacity 
+          style={[styles.applyBtn, { backgroundColor: colors.primary }]}
+          onPress={onApply}
+        >
+          <Text style={styles.applyBtnText}>Apply Now</Text>
+        </TouchableOpacity>
       </View>
     </TouchableOpacity>
   );

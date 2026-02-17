@@ -54,7 +54,7 @@ export const SavedJobsScreen: React.FC = () => {
             <JobCard 
               job={item} 
               onPress={() => handlePressJob(item)} // Pass the press handler here
-              // onApply={() => handleApply(item)} 
+              onApply={() => handleApply(item)} 
               // showRemove 
             />
           )}
