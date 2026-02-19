@@ -33,28 +33,45 @@ export const useJobsAPI = (): UseJobsReturn => {
       }
 
       const data = await response.json();
-
-      // 2. TARGET THE 'jobs' ARRAY from your sample JSON
       const apiJobs = data.jobs || []; 
 
-      // 3. Map the specific fields from your sample to your App's Job type
-      const mappedJobs = apiJobs.map((job: any) => ({
-        id: generateUUID(),
-        title: job.title || 'Untitled Role',
-        company: job.companyName || 'Unknown Company',
-        companyLogo: job.companyLogo, // Map the logo
-        mainCategory: job.mainCategory,
-        jobType: job.jobType,
-        workModel: job.workModel,
-        seniorityLevel: job.seniorityLevel,
-        salaryMin: job.minSalary,
-        salaryMax: job.maxSalary,
-        currency: job.currency,
-        locations: job.locations || [], // Ensure it's an array
-        tags: job.tags || [],
-        description: job.description || '',
-        isSaved: false,
-      }));
+      // 1. Create a tracker for seeds we have already used
+      const seenSeeds = new Set<string>();
+
+      const mappedJobs = apiJobs.map((job: any) => {
+        
+        // 2. Create the base string
+        const baseString = `${job.title || 'unknown'}-${job.companyName || 'unknown'}`;
+        let uniqueString = baseString;
+        let counter = 1;
+
+        // 3. If we already used this string, add a counter to make it unique (e.g., "-1", "-2")
+        while (seenSeeds.has(uniqueString)) {
+          uniqueString = `${baseString}-${counter}`;
+          counter++;
+        }
+        
+        // Mark this string as used
+        seenSeeds.add(uniqueString);
+
+        return {
+          id: generateUUID(uniqueString), // 4. Generate the fixed UUID with the guaranteed unique string
+          title: job.title || 'Untitled Role',
+          company: job.companyName || 'Unknown Company',
+          companyLogo: job.companyLogo, 
+          mainCategory: job.mainCategory,
+          jobType: job.jobType,
+          workModel: job.workModel,
+          seniorityLevel: job.seniorityLevel,
+          salaryMin: job.minSalary,
+          salaryMax: job.maxSalary,
+          currency: job.currency,
+          locations: job.locations || [], 
+          tags: job.tags || [],
+          description: job.description || '',
+          isSaved: false,
+        };
+      });
 
       setJobs(mappedJobs);
 
