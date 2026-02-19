@@ -20,6 +20,11 @@ export const styles = StyleSheet.create({
     flex: 1,
     fontSize: 15,
   },
+  clearBtn: {
+    marginLeft: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   filterBtn: {
     width: 48,
     height: 48,
