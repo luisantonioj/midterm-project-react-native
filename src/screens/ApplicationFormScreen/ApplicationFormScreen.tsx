@@ -6,7 +6,9 @@ import {
   KeyboardAvoidingView,
   Platform,
   Alert,
+  Image,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useTheme } from '../../contexts/ThemeContext';
@@ -91,6 +93,10 @@ export const ApplicationFormScreen: React.FC = () => {
     }, 1000);
   };
 
+  const formattedSalary = job.salaryMin && job.salaryMax
+    ? `${job.currency} ${job.salaryMin.toLocaleString()} - ${job.salaryMax.toLocaleString()}`
+    : job.salary || 'Salary not disclosed';
+
   return (
     <KeyboardAvoidingView
       style={[styles.container, { backgroundColor: colors.background }]}
@@ -103,8 +109,63 @@ export const ApplicationFormScreen: React.FC = () => {
       >
         <View style={styles.header}>
           <Text style={[styles.title, { color: colors.text }]}>Apply for Job</Text>
-          <Text style={[styles.jobTitle, { color: colors.textSecondary }]}>{job.title}</Text>
-          <Text style={[styles.company, { color: colors.textSecondary }]}>{job.company}</Text>
+          <View style={[styles.summaryCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
+          
+          {/* Top Row: Logo, Title, Company */}
+          <View style={styles.summaryHeader}>
+            <Image 
+              source={{ uri: job.companyLogo || 'https://via.placeholder.com/60' }} 
+              style={styles.logo} 
+            />
+            <View style={styles.headerTextContainer}>
+              <Text style={[styles.jobTitle, { color: colors.text }]} numberOfLines={2}>
+                {job.title}
+              </Text>
+              <Text style={[styles.company, { color: colors.textSecondary }]}>
+                {job.company}
+              </Text>
+            </View>
+          </View>
+
+          {/* Divider */}
+          <View style={[styles.divider, { backgroundColor: colors.border }]} />
+
+          {/* Details Grid with Icons */}
+          <View style={styles.detailsGrid}>
+            <View style={styles.detailItem}>
+              <Ionicons name="cash-outline" size={16} color={colors.textSecondary} />
+              <Text style={[styles.detailText, { color: colors.text }]}>{formattedSalary}</Text>
+            </View>
+            
+            <View style={styles.detailItem}>
+              <Ionicons name="location-outline" size={16} color={colors.textSecondary} />
+              <Text style={[styles.detailText, { color: colors.text }]} numberOfLines={1}>
+                {job.locations?.join(', ') || 'Remote'}
+              </Text>
+            </View>
+
+            {job.jobType && (
+              <View style={styles.detailItem}>
+                <Ionicons name="briefcase-outline" size={16} color={colors.textSecondary} />
+                <Text style={[styles.detailText, { color: colors.text }]}>{job.jobType}</Text>
+              </View>
+            )}
+
+            {job.workModel && (
+              <View style={styles.detailItem}>
+                <Ionicons name="laptop-outline" size={16} color={colors.textSecondary} />
+                <Text style={[styles.detailText, { color: colors.text }]}>{job.workModel}</Text>
+              </View>
+            )}
+
+            {job.seniorityLevel && (
+              <View style={styles.detailItem}>
+                <Ionicons name="trending-up-outline" size={16} color={colors.textSecondary} />
+                <Text style={[styles.detailText, { color: colors.text }]}>{job.seniorityLevel}</Text>
+              </View>
+            )}
+          </View>
+        </View>
         </View>
 
         <View style={styles.form}>
