@@ -1,5 +1,6 @@
 import React from 'react';
-import { TouchableOpacity, Text } from 'react-native';
+import { TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons'; // Import Ionicons
 import { useTheme } from '../../contexts/ThemeContext';
 import { styles } from './ThemeToggle.styles';
 
@@ -12,7 +13,12 @@ export const ThemeToggle: React.FC = () => {
       onPress={toggleTheme}
       activeOpacity={0.7}
     >
-      <Text style={styles.icon}>{theme === 'light' ? '🌙' : '☀️'}</Text>
+      {/* Replaced emoji with Icon */}
+      <Ionicons 
+        name={theme === 'light' ? 'moon' : 'sunny'} 
+        size={20} 
+        color={colors.text} 
+      />
     </TouchableOpacity>
   );
 };
