@@ -54,12 +54,14 @@ export const styles = StyleSheet.create({
   activeFilterBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 6,
+    justifyContent: 'center',
+    height: 32,               
     paddingHorizontal: 12,
-    borderRadius: 20,
+    borderRadius: 16,
     borderWidth: 1,
     marginRight: 8,
     marginBottom: 8,
+    maxWidth: 160,
   },
   
   // --- Modal Styles ---
@@ -97,10 +99,13 @@ export const styles = StyleSheet.create({
     gap: 10,
   },
   filterOptionBtn: {
-    paddingVertical: 8,
+    justifyContent: 'center',
+    height: 36,              
     paddingHorizontal: 14,
-    borderRadius: 20,
+    borderRadius: 18,         
     borderWidth: 1,
+    maxWidth: '100%',
+    alignSelf: 'flex-start',
   },
   filterOptionText: {
     fontSize: 14,

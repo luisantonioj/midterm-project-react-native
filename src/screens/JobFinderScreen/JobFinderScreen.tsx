@@ -80,7 +80,7 @@ export const JobFinderScreen: React.FC = () => {
             style={[styles.activeFilterBadge, { backgroundColor: colors.primary, borderColor: colors.primary }]}
             onPress={() => removeFilter(filter.category, filter.value)}
           >
-            <Text style={{ color: '#fff', fontSize: 12, fontWeight: '600' }}>{filter.label}</Text>
+            <Text style={{ color: '#fff', fontSize: 12, fontWeight: '600', flexShrink: 1 }}>{filter.label}</Text>
             <Ionicons name="close-circle" size={16} color="#fff" style={{ marginLeft: 6 }} />
           </TouchableOpacity>
         ))}
@@ -181,7 +181,10 @@ export const JobFinderScreen: React.FC = () => {
                         style={[styles.filterOptionBtn, filters.jobType.includes(opt) ? { backgroundColor: colors.primary, borderColor: colors.primary } : { borderColor: colors.border }]}
                         onPress={() => toggleFilter('jobType', opt)}
                       >
-                        <Text style={[styles.filterOptionText, { color: filters.jobType.includes(opt) ? '#fff' : colors.text }]}>{opt}</Text>
+                        <Text style={[styles.filterOptionText, { color: filters.jobType.includes(opt) ? '#fff' : colors.text }]}
+                          numberOfLines={1}>
+                            {opt}
+                        </Text>
                       </TouchableOpacity>
                     ))}
                   </View>
