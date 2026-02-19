@@ -11,15 +11,12 @@ import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useTheme } from '../../contexts/ThemeContext';
 import { Button, Input } from '../../components';
-import { validateApplicationForm } from '../../utils/validation';
+import { validateName, validateEmail, validateContactNumber } from '../../utils/validation';
 import { RootStackParamList } from '../../navigation/types';
 import { styles } from './ApplicationFormScreen.styles';
 
 type ApplicationFormRouteProp = RouteProp<RootStackParamList, 'ApplicationForm'>;
-type ApplicationFormNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  'ApplicationForm'
->;
+type ApplicationFormNavigationProp = StackNavigationProp<RootStackParamList, 'ApplicationForm'>;
 
 export const ApplicationFormScreen: React.FC = () => {
   const navigation = useNavigation<ApplicationFormNavigationProp>();
@@ -35,61 +32,52 @@ export const ApplicationFormScreen: React.FC = () => {
     whyHireYou: '',
   });
 
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  // Track which fields the user has interacted with
+  const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // --- Real-time error evaluation ---
+  const nameError = validateName(formData.name);
+  const emailError = validateEmail(formData.email);
+  const contactError = validateContactNumber(formData.contactNumber);
+
+  // Form is valid only if required fields have NO errors
+  const isFormValid = !nameError && !emailError && !contactError;
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
-    // Clear error when user starts typing
-    if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: '' }));
+    
+    // Instantly mark the field as "touched" the moment they start typing
+    // This forces the UI to evaluate and show the error message immediately.
+    if (!touched[field]) {
+      setTouched((prev) => ({ ...prev, [field]: true }));
     }
   };
 
+  // Triggers when a user clicks into an input and then clicks away
+  const handleBlur = (field: string) => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+  };
+
   const handleSubmit = () => {
-    // Validate form
-    const validationErrors = validateApplicationForm(
-      formData.name,
-      formData.email,
-      formData.contactNumber,
-      formData.whyHireYou
-    );
+    // Touch all required fields just in case (e.g. keyboard submit)
+    setTouched({ name: true, email: true, contactNumber: true });
 
-    if (validationErrors.length > 0) {
-      const errorMap: { [key: string]: string } = {};
-      validationErrors.forEach((error) => {
-        errorMap[error.field] = error.message;
-      });
-      setErrors(errorMap);
-      return;
-    }
+    if (!isFormValid) return;
 
-    // Submit application
     setIsSubmitting(true);
 
-    // Simulate API call
+    // Simulate API submission
     setTimeout(() => {
       setIsSubmitting(false);
 
-      // Show success message
-      const message = `Application submitted successfully for ${job.title} at ${job.company}!`;
-      
       Alert.alert(
         'Success! 🎉',
-        message,
+        `Application submitted successfully for ${job.title} at ${job.company}!`,
         [
           {
             text: 'Okay',
             onPress: () => {
-              // Clear form
-              setFormData({
-                name: '',
-                email: '',
-                contactNumber: '',
-                whyHireYou: '',
-              });
-
-              // Navigate based on where the user came from
               if (fromSaved) {
                 navigation.navigate('MainTabs');
               } else {
@@ -115,12 +103,8 @@ export const ApplicationFormScreen: React.FC = () => {
       >
         <View style={styles.header}>
           <Text style={[styles.title, { color: colors.text }]}>Apply for Job</Text>
-          <Text style={[styles.jobTitle, { color: colors.textSecondary }]}>
-            {job.title}
-          </Text>
-          <Text style={[styles.company, { color: colors.textSecondary }]}>
-            {job.company}
-          </Text>
+          <Text style={[styles.jobTitle, { color: colors.textSecondary }]}>{job.title}</Text>
+          <Text style={[styles.company, { color: colors.textSecondary }]}>{job.company}</Text>
         </View>
 
         <View style={styles.form}>
@@ -129,7 +113,8 @@ export const ApplicationFormScreen: React.FC = () => {
             placeholder="Enter your full name"
             value={formData.name}
             onChangeText={(value) => handleInputChange('name', value)}
-            error={errors.name}
+            onBlur={() => handleBlur('name')} // Check validity on blur
+            error={touched.name ? nameError : ''} // Only show error if touched
           />
 
           <Input
@@ -137,36 +122,38 @@ export const ApplicationFormScreen: React.FC = () => {
             placeholder="your.email@example.com"
             value={formData.email}
             onChangeText={(value) => handleInputChange('email', value)}
+            onBlur={() => handleBlur('email')}
             keyboardType="email-address"
             autoCapitalize="none"
-            error={errors.email}
+            error={touched.email ? emailError : ''}
           />
 
           <Input
             label="Contact Number *"
-            placeholder="1234567890"
+            placeholder="09123456789"
             value={formData.contactNumber}
             onChangeText={(value) => handleInputChange('contactNumber', value)}
+            onBlur={() => handleBlur('contactNumber')}
             keyboardType="phone-pad"
-            error={errors.contactNumber}
+            error={touched.contactNumber ? contactError : ''}
           />
 
           <Input
-            label="Why should we hire you? *"
-            placeholder="Tell us about your skills and experience (minimum 20 characters)"
+            label="Why should we hire you? (Optional)"
+            placeholder="Tell us about your skills and experience"
             value={formData.whyHireYou}
             onChangeText={(value) => handleInputChange('whyHireYou', value)}
             multiline
             numberOfLines={6}
             style={styles.textArea}
-            error={errors.whyHireYou}
+            // No error or onBlur props needed here since it's completely optional
           />
 
           <View style={styles.buttonContainer}>
             <Button
               title={isSubmitting ? 'Submitting...' : 'Submit Application'}
               onPress={handleSubmit}
-              disabled={isSubmitting}
+              disabled={!isFormValid || isSubmitting} // Disables the button dynamically
             />
             
             <Button
