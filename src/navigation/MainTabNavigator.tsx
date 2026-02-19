@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons } from '@expo/vector-icons'; // Import Ionicons
+import { Ionicons } from '@expo/vector-icons';
 import { JobFinderScreen } from '../screens/JobFinderScreen/JobFinderScreen';
 import { SavedJobsScreen } from '../screens/SavedJobsScreen/SavedJobsScreen';
 import { MainTabParamList } from './types';

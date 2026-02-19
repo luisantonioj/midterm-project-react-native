@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Text, ViewStyle, TextStyle } from 'react-native';
+import { Pressable, Text, ViewStyle, TextStyle } from 'react-native';
 import { useTheme } from '../../contexts/ThemeContext';
 import { styles } from './Button.styles';
 
@@ -42,19 +42,19 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   return (
-    <TouchableOpacity
-      style={[
+    <Pressable
+      style={({ pressed }) => [
         styles.button,
         { backgroundColor: getBackgroundColor() },
         style,
+        pressed && { opacity: 0.7 } 
       ]}
       onPress={onPress}
       disabled={disabled}
-      activeOpacity={0.7}
     >
       <Text style={[styles.text, { color: getTextColor() }, textStyle]}>
         {title}
       </Text>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
