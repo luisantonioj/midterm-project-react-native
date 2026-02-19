@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; 
 import { Job } from '../../types';
 import { useTheme } from '../../contexts/ThemeContext';
@@ -33,10 +33,13 @@ export const JobCard: React.FC<JobCardProps> = ({ job, onPress, onApply }) => {
   };
 
   return (
-    <TouchableOpacity 
-      style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}
+    <Pressable 
+      style={({ pressed }) => [
+        styles.card, 
+        { backgroundColor: colors.card, borderColor: colors.border },
+        pressed && { opacity: 0.9 } // Added fade effect for the card
+      ]}
       onPress={onPress}
-      activeOpacity={0.9}
     >
       <View style={styles.header}>
         <Image 
@@ -51,17 +54,12 @@ export const JobCard: React.FC<JobCardProps> = ({ job, onPress, onApply }) => {
             {job.company}
           </Text>
         </View>
-        <TouchableOpacity 
-          style={[
-            styles.saveButton, 
-            isSaved && { backgroundColor: colors.primary, borderColor: colors.primary }
-          ]}
+        <Pressable 
+          style={({ pressed }) => [styles.saveIconBtn, pressed && { opacity: 0.6 }]}
           onPress={handleSave}
         >
-          <Text style={[styles.saveBtnText, isSaved && { color: '#FFF' }]}>
-            {isSaved ? 'Saved' : 'Save'}
-          </Text>
-        </TouchableOpacity>
+          <Ionicons name={isSaved ? "bookmark" : "bookmark-outline"} size={24} color={isSaved ? colors.primary : colors.textSecondary} />
+        </Pressable>
       </View>
 
       <View style={styles.badgeRow}>
@@ -101,13 +99,17 @@ export const JobCard: React.FC<JobCardProps> = ({ job, onPress, onApply }) => {
           </View>
         </View>
 
-        <TouchableOpacity 
-          style={[styles.applyBtn, { backgroundColor: colors.primary }]}
+        <Pressable 
+          style={({ pressed }) => [
+            styles.applyBtn, 
+            { backgroundColor: colors.primary },
+            pressed && { opacity: 0.8 } // Added fade effect for the apply button
+          ]}
           onPress={onApply}
         >
           <Text style={styles.applyBtnText}>Apply Now</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 };

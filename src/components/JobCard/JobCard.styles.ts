@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-    alignItems: 'center', // Align logo and text vertically
+    alignItems: 'center', 
     marginBottom: 12,
   },
   logo: {
@@ -38,20 +38,13 @@ export const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '500',
   },
-  saveButton: {
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 20,       
-    borderWidth: 1,
-    borderColor: '#ddd', 
+  saveIconBtn: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: 8,
-  },
-  saveBtnText: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#666',          // Dark grey text when not saved
   },
   badgeRow: {
     flexDirection: 'row',
@@ -83,7 +76,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingTop: 12,
-    borderTopWidth: 1, // Adds a subtle line separating content from footer
+    borderTopWidth: 1, 
     borderTopColor: '#f0f0f0', 
   },
   footerInfo: {
@@ -92,7 +85,7 @@ export const styles = StyleSheet.create({
   },
   salaryText: {
     fontSize: 15,
-    fontWeight: '800', // Bolder as requested
+    fontWeight: '800', 
     marginBottom: 2,
   },
   locationText: {
@@ -102,7 +95,7 @@ export const styles = StyleSheet.create({
   applyBtn: {
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 25, // Pill shape
+    borderRadius: 25, 
     marginLeft: 12,
   },
   applyBtnText: {
