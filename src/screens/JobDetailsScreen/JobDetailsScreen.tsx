@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, Image, Pressable } from 'react-native';
 import { useRoute, useNavigation, RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useTheme } from '../../contexts/ThemeContext';
@@ -120,8 +120,12 @@ export const JobDetailsScreen: React.FC = () => {
 
         {/* Tabs */}
         <View style={[styles.tabContainer, { borderBottomColor: colors.border }]}>
-          <TouchableOpacity 
-            style={[styles.tabButton, activeTab === 'description' && { borderBottomColor: colors.primary }]}
+          <Pressable 
+            style={({ pressed }) => [
+              styles.tabButton, 
+              activeTab === 'description' && { borderBottomColor: colors.primary },
+              pressed && { opacity: 0.6 }
+            ]}
             onPress={() => setActiveTab('description')}
           >
             <Text style={[
@@ -130,10 +134,14 @@ export const JobDetailsScreen: React.FC = () => {
             ]}>
               Description
             </Text>
-          </TouchableOpacity>
+          </Pressable>
           
-          <TouchableOpacity 
-            style={[styles.tabButton, activeTab === 'requirements' && { borderBottomColor: colors.primary }]}
+          <Pressable 
+            style={({ pressed }) => [
+              styles.tabButton, 
+              activeTab === 'requirements' && { borderBottomColor: colors.primary },
+              pressed && { opacity: 0.6 }
+            ]}
             onPress={() => setActiveTab('requirements')}
           >
             <Text style={[
@@ -142,10 +150,14 @@ export const JobDetailsScreen: React.FC = () => {
             ]}>
               Requirements
             </Text>
-          </TouchableOpacity>
+          </Pressable>
 
-          <TouchableOpacity 
-            style={[styles.tabButton, activeTab === 'benefits' && { borderBottomColor: colors.primary }]}
+          <Pressable 
+            style={({ pressed }) => [
+              styles.tabButton, 
+              activeTab === 'benefits' && { borderBottomColor: colors.primary },
+              pressed && { opacity: 0.6 } 
+            ]}
             onPress={() => setActiveTab('benefits')}
           >
             <Text style={[
@@ -154,7 +166,7 @@ export const JobDetailsScreen: React.FC = () => {
             ]}>
               Benefits
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
 
         {/* Content Area (Dynamic) */}
