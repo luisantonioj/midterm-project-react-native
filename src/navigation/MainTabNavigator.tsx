@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons'; // Import Ionicons
 import { JobFinderScreen } from '../screens/JobFinderScreen/JobFinderScreen';
 import { SavedJobsScreen } from '../screens/SavedJobsScreen/SavedJobsScreen';
 import { MainTabParamList } from './types';
@@ -28,8 +28,9 @@ export const MainTabNavigator: React.FC = () => {
         component={JobFinderScreen}
         options={{
           tabBarLabel: 'Find Jobs',
+          // Replaced emoji with Icon
           tabBarIcon: ({ color, size }) => (
-            <TabIcon icon="🔍" color={color} size={size} />
+            <Ionicons name="search" color={color} size={size} />
           ),
         }}
       />
@@ -38,21 +39,12 @@ export const MainTabNavigator: React.FC = () => {
         component={SavedJobsScreen}
         options={{
           tabBarLabel: 'Saved',
+          // Replaced emoji with Icon
           tabBarIcon: ({ color, size }) => (
-            <TabIcon icon="💾" color={color} size={size} />
+            <Ionicons name="bookmark" color={color} size={size} />
           ),
         }}
       />
     </Tab.Navigator>
   );
-};
-
-interface TabIconProps {
-  icon: string;
-  color: string;
-  size: number;
-}
-
-const TabIcon: React.FC<TabIconProps> = ({ icon }) => {
-  return <Text style={{ fontSize: 24 }}>{icon}</Text>;
 };
