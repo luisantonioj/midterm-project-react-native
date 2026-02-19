@@ -229,9 +229,12 @@ export const JobFinderScreen: React.FC = () => {
 
               <View style={{ height: 40 }} />
             </ScrollView>
-
-            <Button title="Apply Filters" onPress={() => setIsFilterVisible(false)} style={{ marginTop: 10 }} />
-          </View>
+            <Button 
+                title={`Show ${filteredJobs.length} ${filteredJobs.length === 1 ? 'Result' : 'Results'}`} 
+                onPress={() => setIsFilterVisible(false)} 
+                style={{ marginTop: 10 }} 
+              />
+            </View>
         </View>
       </Modal>
 
