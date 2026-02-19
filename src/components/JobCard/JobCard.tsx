@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, Text, Image, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; 
 import { Job } from '../../types';
@@ -12,7 +12,7 @@ interface JobCardProps {
   onApply: () => void;
 }
 
-export const JobCard: React.FC<JobCardProps> = ({ job, onPress, onApply }) => {
+const JobCardBase: React.FC<JobCardProps> = ({ job, onPress, onApply }) => {
   const { colors } = useTheme();
   const { saveJob, removeJob, isJobSaved } = useJobs();
   const isSaved = isJobSaved(job.id);
@@ -113,3 +113,5 @@ export const JobCard: React.FC<JobCardProps> = ({ job, onPress, onApply }) => {
     </Pressable>
   );
 };
+
+export const JobCard = memo(JobCardBase);

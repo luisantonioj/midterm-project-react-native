@@ -136,6 +136,10 @@ export const JobFinderScreen: React.FC = () => {
             ListEmptyComponent={renderEmptyComponent}
             refreshControl={<RefreshControl refreshing={loading} onRefresh={refreshJobs} tintColor={colors.primary} />}
             showsVerticalScrollIndicator={false}
+            initialNumToRender={5}      
+            maxToRenderPerBatch={5}     
+            windowSize={5}             
+            removeClippedSubviews={true}
           />
         )}
       </View>
