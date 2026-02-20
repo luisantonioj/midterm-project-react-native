@@ -17,6 +17,7 @@ import { Button, Input } from '../../components';
 import { validateName, validateEmail, validateContactNumber } from '../../utils/validation';
 import { RootStackParamList } from '../../navigation/types';
 import { styles } from './ApplicationFormScreen.styles';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type ApplicationFormRouteProp = RouteProp<RootStackParamList, 'ApplicationForm'>;
 type ApplicationFormNavigationProp = StackNavigationProp<RootStackParamList, 'ApplicationForm'>;
@@ -25,6 +26,7 @@ export const ApplicationFormScreen: React.FC = () => {
   const navigation = useNavigation<ApplicationFormNavigationProp>();
   const route = useRoute<ApplicationFormRouteProp>();
   const { colors } = useTheme();
+  const insets = useSafeAreaInsets();
   
   const { job, fromSaved } = route.params;
 
@@ -35,21 +37,26 @@ export const ApplicationFormScreen: React.FC = () => {
     whyHireYou: '',
   });
 
-  // Track which fields the user has interacted with
   const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Modal States
   const [isConfirmVisible, setIsConfirmVisible] = useState(false);
   const [isSuccessVisible, setIsSuccessVisible] = useState(false);
+  const [isCancelVisible, setIsCancelVisible] = useState(false); // 👈 NEW: Cancel Modal State
 
-  // --- Real-time error evaluation ---
   const nameError = validateName(formData.name);
   const emailError = validateEmail(formData.email);
   const contactError = validateContactNumber(formData.contactNumber);
 
-  // Form is valid only if required fields have NO errors
   const isFormValid = !nameError && !emailError && !contactError;
+
+  // 👈 NEW: Check if there's at least 1 character in any field
+  const hasUnsavedChanges = 
+    formData.name.trim().length > 0 || 
+    formData.email.trim().length > 0 || 
+    formData.contactNumber.trim().length > 0 || 
+    formData.whyHireYou.trim().length > 0;
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -62,26 +69,37 @@ export const ApplicationFormScreen: React.FC = () => {
     setTouched((prev) => ({ ...prev, [field]: true }));
   };
 
-  // STEP 1: Open the confirmation modal if valid
+  // 👈 NEW: Handle the 'X' Close Button Press
+  const handleClosePress = () => {
+    if (hasUnsavedChanges) {
+      setIsCancelVisible(true); // Show warning
+    } else {
+      navigation.goBack(); // Safe to go back immediately
+    }
+  };
+
+  // 👈 NEW: Actually discard and leave
+  const handleDiscardChanges = () => {
+    setIsCancelVisible(false);
+    navigation.goBack();
+  };
+
   const handleInitiateSubmit = () => {
     setTouched({ name: true, email: true, contactNumber: true });
     if (!isFormValid) return;
     setIsConfirmVisible(true);
   };
 
-  // STEP 2: Process the final submission
   const handleConfirmSubmit = () => {
     setIsConfirmVisible(false);
     setIsSubmitting(true);
 
-    // Simulate API submission
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSuccessVisible(true);
     }, 1500);
   };
 
-  // STEP 3: Close success modal and navigate away
   const handleSuccessClose = () => {
     setIsSuccessVisible(false);
     setFormData({ name: '', email: '', contactNumber: '', whyHireYou: '' });
@@ -103,14 +121,20 @@ export const ApplicationFormScreen: React.FC = () => {
     >
       <ScrollView
         style={styles.scrollView}
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={[
+          styles.scrollContent, 
+          { 
+            paddingTop: insets.top + 20, 
+            paddingBottom: insets.bottom + 32 
+          }
+        ]}
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.header}>
           <View style={styles.headerRow}>
             <Text style={[styles.title, { color: colors.text }]}>Apply for Job</Text>
             <Pressable 
-              onPress={() => navigation.goBack()} 
+              onPress={handleClosePress} // 👈 Use the new handler here
               style={({ pressed }) => [styles.closeBtn, pressed && { opacity: 0.6 }]}
             >
               <Ionicons name="close-circle" size={28} color={colors.textSecondary} />
@@ -118,7 +142,6 @@ export const ApplicationFormScreen: React.FC = () => {
           </View>
 
           <View style={[styles.summaryCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
-            {/* Top Row: Logo, Title, Company */}
             <View style={styles.summaryHeader}>
               <Image 
                 source={{ uri: job.companyLogo || 'https://via.placeholder.com/60' }} 
@@ -134,10 +157,8 @@ export const ApplicationFormScreen: React.FC = () => {
               </View>
             </View>
 
-            {/* Divider */}
             <View style={[styles.divider, { backgroundColor: colors.border }]} />
 
-            {/* Details Grid with Icons */}
             <View style={styles.detailsGrid}>
               <View style={styles.detailItem}>
                 <Ionicons name="cash-outline" size={16} color={colors.textSecondary} />
@@ -226,7 +247,34 @@ export const ApplicationFormScreen: React.FC = () => {
         </View>
       </ScrollView>
 
-      {/* --- CONFIRMATION MODAL --- */}
+      {/* --- 1. UNSAVED CHANGES / CANCEL MODAL --- */}
+      <Modal visible={isCancelVisible} animationType="fade" transparent={true}>
+        <View style={styles.modalOverlay}>
+          <View style={[styles.modalContent, { backgroundColor: colors.background }]}>
+            <Text style={[styles.modalTitle, { color: colors.text }]}>Discard Application?</Text>
+            <Text style={[styles.modalSubtitle, { color: colors.textSecondary }]}>
+              You have unsaved changes. Are you sure you want to leave? Your progress will be lost.
+            </Text>
+
+            <View style={styles.modalButtons}>
+              <Button 
+                title="Keep Editing" 
+                variant="secondary" 
+                onPress={() => setIsCancelVisible(false)} 
+                style={styles.modalButton} 
+              />
+              <Button 
+                title="Discard" 
+                variant="danger" // Uses your red variant
+                onPress={handleDiscardChanges} 
+                style={styles.modalButton} 
+              />
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* --- 2. CONFIRMATION MODAL --- */}
       <Modal visible={isConfirmVisible} animationType="fade" transparent={true}>
         <View style={styles.modalOverlay}>
           <View style={[styles.modalContent, { backgroundColor: colors.background }]}>
@@ -262,7 +310,7 @@ export const ApplicationFormScreen: React.FC = () => {
         </View>
       </Modal>
 
-      {/* --- SUCCESS MODAL --- */}
+      {/* --- 3. SUCCESS MODAL --- */}
       <Modal visible={isSuccessVisible} animationType="fade" transparent={true}>
         <View style={styles.modalOverlay}>
           <View style={[styles.modalContent, { backgroundColor: colors.background, alignItems: 'center' }]}>

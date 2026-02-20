@@ -8,9 +8,7 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    paddingTop: 60,
     paddingHorizontal: 16,
-    paddingBottom: 32,
   },
 
   // --- Header Row Updates ---
