@@ -12,19 +12,26 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 32,
   },
-  screenTitle: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 16,
+
+  // --- Header Row Updates ---
+  header: {
+    marginBottom: 1,
+  },
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 8,
   },
-  header: {
-    marginBottom: 1,
+  closeBtn: {
+    padding: 4,
   },
+
+  // --- Summary Card Updates ---
   summaryCard: {
     padding: 16,
     borderRadius: 16,
@@ -63,7 +70,7 @@ export const styles = StyleSheet.create({
     marginVertical: 16,
   },
   detailsGrid: {
-    gap: 10, // Modern approach for spacing children
+    gap: 10, 
   },
   detailItem: {
     flexDirection: 'row',
@@ -73,7 +80,7 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     marginLeft: 8,
     fontWeight: '500',
-    flexShrink: 1, // Prevents long locations from pushing out of the box
+    flexShrink: 1, 
   },
 
   // --- Form Styles ---
@@ -87,7 +94,68 @@ export const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: 8,
   },
-  cancelButton: {
-    marginTop: 12,
+
+  // --- Modal Styles ---
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  modalContent: {
+    width: '100%',
+    borderRadius: 24,
+    padding: 24,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 5,
+  },
+  modalTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  modalSubtitle: {
+    fontSize: 15,
+    lineHeight: 22,
+    marginBottom: 20,
+  },
+  reviewBox: {
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 24,
+    borderWidth: 1,
+  },
+  reviewRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  reviewLabel: {
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  reviewValue: {
+    fontSize: 15,
+    fontWeight: '600',
+    flex: 1,
+    textAlign: 'right',
+    marginLeft: 20,
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  modalButton: {
+    flex: 1,
+  },
+  successIconBox: {
+    marginBottom: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
