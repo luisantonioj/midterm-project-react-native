@@ -118,13 +118,12 @@ export const styles = StyleSheet.create({
     gap: 8,
   },
   tag: {
-    paddingVertical: 6,
+    height: 32,
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingHorizontal: 12,
     borderRadius: 8,
     borderWidth: 1,
-    fontSize: 13,
-    fontWeight: '500',
-    overflow: 'hidden', // Required for borderRadius on Text in iOS sometimes
   },
 
   // --- Footer ---

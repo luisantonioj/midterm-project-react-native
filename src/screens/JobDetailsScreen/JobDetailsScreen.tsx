@@ -199,13 +199,20 @@ export const JobDetailsScreen: React.FC = () => {
             <Text style={[styles.sectionTitle, { color: colors.text }]}>Key Skills</Text>
             <View style={styles.tagsContainer}>
               {job.tags.map((tag, index) => (
-                <Text key={index} style={[styles.tag, { 
-                  backgroundColor: colors.card, 
-                  color: colors.primary,
-                  borderColor: colors.border
-                }]}>
-                  {tag}
-                </Text>
+                <View 
+                  key={index} 
+                  style={[styles.tag, { 
+                    backgroundColor: colors.card, 
+                    borderColor: colors.border
+                  }]}
+                >
+                  <Text 
+                    style={[styles.tagText, { color: colors.primary }]}
+                    numberOfLines={1}
+                  >
+                    {tag}
+                  </Text>
+                </View>
               ))}
             </View>
           </View>
