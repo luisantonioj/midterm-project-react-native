@@ -33,12 +33,21 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 5,
   },
+  locationContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 6,
+    marginBottom: 16,
+    paddingHorizontal: 20,
+  },
+  locationIcon: {
+    marginRight: 6,
+  },
   locations: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '400',
     textAlign: 'center',
-    marginTop: 10,
-    marginBottom: 16,
   },
   
   // --- Badges ---
@@ -51,9 +60,14 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   badge: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingVertical: 6,
-    paddingHorizontal: 14,
+    paddingHorizontal: 12,
     borderRadius: 20,
+  },
+  badgeIcon: {
+    marginRight: 6,
   },
   badgeText: {
     fontSize: 13,

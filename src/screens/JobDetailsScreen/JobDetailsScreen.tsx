@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, Image, Pressable } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useRoute, useNavigation, RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useTheme } from '../../contexts/ThemeContext';
@@ -100,22 +101,38 @@ export const JobDetailsScreen: React.FC = () => {
         </Text>
 
         {/* Salary */}
-        <Text style={[styles.salary, { color: colors.success }]}>
+        <Text style={[styles.salary, { color: colors.primary }]}>
           {formattedSalary}
         </Text>
 
         {/* Location */}
-        <Text style={[styles.locations, { color: colors.text }]}>
-          {job.locations || 'Location not specified'}
-        </Text>
+        <View style={styles.locationContainer}>
+          <Ionicons name="location-outline" size={16} color={colors.textSecondary} style={styles.locationIcon} />
+          <Text style={[styles.locations, { color: colors.textSecondary }]}>
+            {job.locations?.join(', ') || 'Location not specified'}
+          </Text>
+        </View>
 
         {/* Badges */}
         <View style={styles.badgesRow}>
-          {[job.jobType, job.workModel, job.seniorityLevel].filter(Boolean).map((badge, index) => (
-            <View key={index} style={[styles.badge, { backgroundColor: colors.inputBackground }]}>
-              <Text style={[styles.badgeText, { color: colors.textSecondary }]}>{badge}</Text>
+          {job.jobType && (
+            <View style={[styles.badge, { backgroundColor: colors.inputBackground }]}>
+              <Ionicons name="briefcase-outline" size={14} color={colors.textSecondary} style={styles.badgeIcon} />
+              <Text style={[styles.badgeText, { color: colors.textSecondary }]}>{job.jobType}</Text>
             </View>
-          ))}
+          )}
+          {job.workModel && (
+            <View style={[styles.badge, { backgroundColor: colors.inputBackground }]}>
+              <Ionicons name="laptop-outline" size={14} color={colors.textSecondary} style={styles.badgeIcon} />
+              <Text style={[styles.badgeText, { color: colors.textSecondary }]}>{job.workModel}</Text>
+            </View>
+          )}
+          {job.seniorityLevel && (
+            <View style={[styles.badge, { backgroundColor: colors.inputBackground }]}>
+              <Ionicons name="trending-up-outline" size={14} color={colors.textSecondary} style={styles.badgeIcon} />
+              <Text style={[styles.badgeText, { color: colors.textSecondary }]}>{job.seniorityLevel}</Text>
+            </View>
+          )}
         </View>
 
         {/* Tabs */}
