@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   button: {
+    flexDirection: 'row',
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
@@ -9,7 +10,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    fontSize: 13,
+    fontSize: 14,
     fontWeight: '600',
   },
 });

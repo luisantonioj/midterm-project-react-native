@@ -1,5 +1,6 @@
 import React from 'react';
 import { Pressable, Text, ViewStyle, TextStyle } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../../contexts/ThemeContext';
 import { styles } from './Button.styles';
 
@@ -10,6 +11,7 @@ interface ButtonProps {
   disabled?: boolean;
   style?: ViewStyle;
   textStyle?: TextStyle;
+  iconName?: keyof typeof Ionicons.glyphMap;
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -19,6 +21,7 @@ export const Button: React.FC<ButtonProps> = ({
   disabled = false,
   style,
   textStyle,
+  iconName,
 }) => {
   const { colors } = useTheme();
 
@@ -52,6 +55,14 @@ export const Button: React.FC<ButtonProps> = ({
       onPress={onPress}
       disabled={disabled}
     >
+      {iconName && (
+        <Ionicons 
+          name={iconName} 
+          size={18} 
+          color={getTextColor()} 
+          style={{ marginRight: 6 }} 
+        />
+      )}
       <Text style={[styles.text, { color: getTextColor() }, textStyle]}>
         {title}
       </Text>

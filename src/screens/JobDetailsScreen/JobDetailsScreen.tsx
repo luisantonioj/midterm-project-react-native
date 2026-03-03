@@ -240,11 +240,13 @@ export const JobDetailsScreen: React.FC = () => {
           onPress={handleSaveToggle}
           variant={isSaved ? "success" : "secondary"}
           style={styles.saveButton}
+          iconName={isSaved ? "bookmark" : "bookmark-outline"}
         />
         <Button 
           title="Apply Now" 
           onPress={handleApply} 
           style={styles.applyButton}
+          iconName="paper-plane-outline"
         />
       </View>
     </View>
