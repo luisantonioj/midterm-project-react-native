@@ -125,7 +125,7 @@ export const ApplicationFormScreen: React.FC = () => {
           styles.scrollContent, 
           { 
             paddingTop: insets.top + 20, 
-            paddingBottom: insets.bottom + 32 
+            paddingBottom: insets.bottom + 5
           }
         ]}
         showsVerticalScrollIndicator={false}
