@@ -1,10 +1,10 @@
-import React from 'react';
-import { View, Text, FlatList } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, FlatList, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useJobs } from '../../contexts/JobContext';
-import { JobCard, ThemeToggle } from '../../components';
+import { JobCard, ThemeToggle, Button } from '../../components';
 import { Job } from '../../types';
 import { RootStackParamList } from '../../navigation/types';
 import { styles } from './SavedJobsScreen.styles';
@@ -14,7 +14,8 @@ type SavedJobsScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 export const SavedJobsScreen: React.FC = () => {
   const navigation = useNavigation<SavedJobsScreenNavigationProp>();
   const { colors } = useTheme();
-  const { savedJobs } = useJobs();
+  const { savedJobs, removeJob } = useJobs();
+  const [jobToRemove, setJobToRemove] = useState<Job | null>(null);
 
   const handlePressJob = (job: Job) => {
     navigation.navigate('JobDetails', { job });
@@ -22,6 +23,13 @@ export const SavedJobsScreen: React.FC = () => {
 
   const handleApply = (job: Job) => {
     navigation.navigate('ApplicationForm', { job, fromSaved: true });
+  };
+
+  const handleConfirmRemove = () => {
+    if (jobToRemove) {
+      removeJob(jobToRemove.id);
+    }
+    setJobToRemove(null);
   };
 
   const renderEmptyComponent = () => (
@@ -55,7 +63,8 @@ export const SavedJobsScreen: React.FC = () => {
               job={item} 
               onPress={() => handlePressJob(item)} // Pass the press handler here
               onApply={() => handleApply(item)} 
-              // showRemove 
+              isSavedScreen={true} 
+              onRemoveRequest={() => setJobToRemove(item)} 
             />
           )}
           keyExtractor={(item) => item.id}
@@ -63,6 +72,32 @@ export const SavedJobsScreen: React.FC = () => {
           showsVerticalScrollIndicator={false}
         />
       </View>
+      {/* --- REMOVE CONFIRMATION MODAL --- */}
+      <Modal visible={!!jobToRemove} animationType="fade" transparent={true}>
+        <View style={styles.modalOverlay}>
+          <View style={[styles.modalContent, { backgroundColor: colors.background }]}>
+            <Text style={[styles.modalTitle, { color: colors.text }]}>Remove Job</Text>
+            <Text style={[styles.modalSubtitle, { color: colors.textSecondary }]}>
+              Are you sure you want to remove <Text style={{ fontWeight: 'bold', color: colors.text }}>{jobToRemove?.title}</Text> at {jobToRemove?.company} from your saved jobs?
+            </Text>
+
+            <View style={styles.modalButtons}>
+              <Button 
+                title="Cancel" 
+                variant="secondary" 
+                onPress={() => setJobToRemove(null)} 
+                style={styles.modalButton} 
+              />
+              <Button 
+                title="Remove" 
+                variant="danger" 
+                onPress={handleConfirmRemove} 
+                style={styles.modalButton} 
+              />
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };

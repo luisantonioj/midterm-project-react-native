@@ -10,9 +10,11 @@ interface JobCardProps {
   job: Job;
   onPress: () => void;
   onApply: () => void;
+  isSavedScreen?: boolean;
+  onRemoveRequest?: () => void;
 }
 
-const JobCardBase: React.FC<JobCardProps> = ({ job, onPress, onApply }) => {
+const JobCardBase: React.FC<JobCardProps> = ({ job, onPress, onApply, isSavedScreen, onRemoveRequest }) => {
   const { colors } = useTheme();
   const { saveJob, removeJob, isJobSaved } = useJobs();
   const isSaved = isJobSaved(job.id);
@@ -30,6 +32,15 @@ const JobCardBase: React.FC<JobCardProps> = ({ job, onPress, onApply }) => {
   const handleSave = () => {
     if (isSaved) removeJob(job.id);
     else saveJob(job);
+  };
+
+  const handleIconPress = () => {
+    if (isSavedScreen && onRemoveRequest) {
+      onRemoveRequest(); 
+    } else {
+      if (isSaved) removeJob(job.id);
+      else saveJob(job);
+    }
   };
 
   return (
@@ -56,9 +67,13 @@ const JobCardBase: React.FC<JobCardProps> = ({ job, onPress, onApply }) => {
         </View>
         <Pressable 
           style={({ pressed }) => [styles.saveIconBtn, pressed && { opacity: 0.6 }]}
-          onPress={handleSave}
+          onPress={handleIconPress} 
         >
-          <Ionicons name={isSaved ? "bookmark" : "bookmark-outline"} size={24} color={isSaved ? colors.primary : colors.textSecondary} />
+          <Ionicons 
+            name={isSavedScreen ? "trash-outline" : (isSaved ? "bookmark" : "bookmark-outline")} 
+            size={24} 
+            color={isSavedScreen ? colors.error : (isSaved ? colors.primary : colors.textSecondary)} 
+          />
         </Pressable>
       </View>
 
