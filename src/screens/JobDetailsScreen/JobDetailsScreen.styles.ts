@@ -105,7 +105,7 @@ export const styles = StyleSheet.create({
   // --- Tags ---
   tagsSection: {
     paddingHorizontal: 20,
-    marginBottom: 20,
+    marginBottom: 30,
   },
   sectionTitle: {
     fontSize: 16,
@@ -125,6 +125,10 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
   },
+  tagText: {
+    fontSize: 13,
+    fontWeight: '500',
+  },
 
   // --- Footer ---
   footer: {
@@ -141,6 +145,7 @@ export const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: -4 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
+    marginBottom: 5,
   },
   saveButton: {
     flex: 1,
