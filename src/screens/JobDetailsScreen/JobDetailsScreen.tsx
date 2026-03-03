@@ -55,6 +55,20 @@ const getSectionContent = (html: string, section: 'description' | 'requirements'
   return '';
 };
 
+// 3. Helper to format tags conditionally
+const formatTag = (tag: string) => {
+  if (!tag) return '';
+  // Only format if the tag is completely lowercase
+  if (tag === tag.toLowerCase()) {
+    return tag
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
+  // Otherwise, leave it alone (preserves "iOS", "NodeJS", "UI/UX", etc.)
+  return tag;
+};
+
 export const JobDetailsScreen: React.FC = () => {
   const { colors } = useTheme();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -210,7 +224,7 @@ export const JobDetailsScreen: React.FC = () => {
                     style={[styles.tagText, { color: colors.primary }]}
                     numberOfLines={1}
                   >
-                    {tag}
+                    {formatTag(tag)}
                   </Text>
                 </View>
               ))}
