@@ -242,6 +242,7 @@ export const ApplicationFormScreen: React.FC = () => {
               title={isSubmitting ? 'Processing...' : 'Submit Application'}
               onPress={handleInitiateSubmit} 
               disabled={!isFormValid || isSubmitting} 
+              iconName="paper-plane-outline"
             />
           </View>
         </View>
@@ -261,13 +262,15 @@ export const ApplicationFormScreen: React.FC = () => {
                 title="Keep Editing" 
                 variant="secondary" 
                 onPress={() => setIsCancelVisible(false)} 
-                style={styles.modalButton} 
+                style={styles.modalButton}
+                iconName="arrow-back-outline"
               />
               <Button 
                 title="Discard" 
                 variant="danger" // Uses your red variant
                 onPress={handleDiscardChanges} 
                 style={styles.modalButton} 
+                iconName="trash-outline"
               />
             </View>
           </View>
@@ -303,8 +306,8 @@ export const ApplicationFormScreen: React.FC = () => {
             </View>
 
             <View style={styles.modalButtons}>
-              <Button title="Cancel" variant="secondary" onPress={() => setIsConfirmVisible(false)} style={styles.modalButton} />
-              <Button title="Confirm" onPress={handleConfirmSubmit} style={styles.modalButton} />
+              <Button title="Cancel" variant="secondary" onPress={() => setIsConfirmVisible(false)} style={styles.modalButton} iconName="close-outline" />
+              <Button title="Confirm" onPress={handleConfirmSubmit} style={styles.modalButton} iconName="checkmark-outline" />
             </View>
           </View>
         </View>
