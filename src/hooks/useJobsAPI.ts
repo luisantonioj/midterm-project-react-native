@@ -53,42 +53,46 @@ export const useJobsAPI = (): UseJobsReturn => {
       const apiJobs = data.jobs || []; 
 
       if (apiJobs.length === 0) {
-        setHasMore(false); 
+        setHasMore(false); // No more jobs exist!
       } else {
-        const mappedJobs = apiJobs.map((job: any) => {
-          const baseString = `${job.title || 'unknown'}-${job.companyName || 'unknown'}`;
-          let uniqueString = baseString;
-          let counter = 1;
+        
+        // Array to hold only strictly unique jobs
+        const strictlyUniqueJobs: Job[] = [];
 
-          while (seenSeeds.current.has(uniqueString)) {
-            uniqueString = `${baseString}-${counter}`;
-            counter++;
+        for (const job of apiJobs) {
+          // Create a "Fingerprint" using Title, Company, and Location
+          const jobLocations = job.locations ? job.locations.join(',') : 'Remote';
+          const jobFingerprint = `${job.title || 'unknown'}-${job.companyName || 'unknown'}-${jobLocations}`;
+          
+          // Only process the job if we have NEVER seen this fingerprint before
+          if (!seenSeeds.current.has(jobFingerprint)) {
+            seenSeeds.current.add(jobFingerprint); // Mark as seen
+
+            strictlyUniqueJobs.push({
+              id: generateUUID(jobFingerprint), 
+              title: job.title || 'Untitled Role',
+              company: job.companyName || 'Unknown Company',
+              companyLogo: job.companyLogo, 
+              mainCategory: job.mainCategory,
+              jobType: job.jobType,
+              workModel: job.workModel,
+              seniorityLevel: job.seniorityLevel,
+              salary: job.salary || '',
+              salaryMin: job.minSalary,
+              salaryMax: job.maxSalary,
+              currency: job.currency,
+              locations: job.locations || [], 
+              tags: job.tags || [],
+              description: job.description || '',
+              isSaved: false,
+            });
           }
-          seenSeeds.current.add(uniqueString);
-
-          return {
-            id: generateUUID(uniqueString), 
-            title: job.title || 'Untitled Role',
-            company: job.companyName || 'Unknown Company',
-            companyLogo: job.companyLogo, 
-            mainCategory: job.mainCategory,
-            jobType: job.jobType,
-            workModel: job.workModel,
-            seniorityLevel: job.seniorityLevel,
-            salaryMin: job.minSalary,
-            salaryMax: job.maxSalary,
-            currency: job.currency,
-            locations: job.locations || [], 
-            tags: job.tags || [],
-            description: job.description || '',
-            isSaved: false,
-          };
-        });
+        }
 
         if (isRefresh) {
-          setJobs(mappedJobs); // Replace list
+          setJobs(strictlyUniqueJobs); // Replace list
         } else {
-          setJobs(prev => [...prev, ...mappedJobs]); // Append to bottom of list
+          setJobs(prev => [...prev, ...strictlyUniqueJobs]); // Append to bottom of list
         }
       }
     } catch (err) {
