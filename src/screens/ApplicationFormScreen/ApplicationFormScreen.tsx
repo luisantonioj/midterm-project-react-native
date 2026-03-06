@@ -18,6 +18,7 @@ import { validateName, validateEmail, validateContactNumber } from '../../utils/
 import { RootStackParamList } from '../../navigation/types';
 import { styles } from './ApplicationFormScreen.styles';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useJobs } from '../../contexts/JobContext';
 
 type ApplicationFormRouteProp = RouteProp<RootStackParamList, 'ApplicationForm'>;
 type ApplicationFormNavigationProp = StackNavigationProp<RootStackParamList, 'ApplicationForm'>;
@@ -90,12 +91,15 @@ export const ApplicationFormScreen: React.FC = () => {
     setIsConfirmVisible(true);
   };
 
+  const { applyToJob } = useJobs();
+
   const handleConfirmSubmit = () => {
     setIsConfirmVisible(false);
     setIsSubmitting(true);
 
     setTimeout(() => {
       setIsSubmitting(false);
+      applyToJob(job.id);
       setIsSuccessVisible(true);
     }, 1500);
   };

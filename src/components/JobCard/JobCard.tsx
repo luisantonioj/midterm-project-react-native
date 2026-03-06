@@ -16,8 +16,9 @@ interface JobCardProps {
 
 const JobCardBase: React.FC<JobCardProps> = ({ job, onPress, onApply, isSavedScreen, onRemoveRequest }) => {
   const { colors } = useTheme();
-  const { saveJob, removeJob, isJobSaved } = useJobs();
+  const { saveJob, removeJob, isJobSaved, hasAppliedToJob } = useJobs();
   const isSaved = isJobSaved(job.id);
+  const hasApplied = hasAppliedToJob(job.id);
 
   const formattedSalary = job.salaryMin && job.salaryMax
     ? `${job.currency} ${job.salaryMin.toLocaleString()} - ${job.salaryMax.toLocaleString()}`
@@ -117,12 +118,15 @@ const JobCardBase: React.FC<JobCardProps> = ({ job, onPress, onApply, isSavedScr
         <Pressable 
           style={({ pressed }) => [
             styles.applyBtn, 
-            { backgroundColor: colors.primary },
-            pressed && { opacity: 0.8 } // Added fade effect for the apply button
+            { backgroundColor: hasApplied ? colors.success : colors.primary }, // Turns green if applied
+            { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }, // Ensure icon sits next to text
+            pressed && !hasApplied && { opacity: 0.8 } 
           ]}
           onPress={onApply}
+          disabled={hasApplied} // Completely disables the button if already applied
         >
-          <Text style={styles.applyBtnText}>Apply Now</Text>
+          {hasApplied && <Ionicons name="checkmark-circle" size={16} color="#fff" style={{ marginRight: 4 }} />}
+          <Text style={styles.applyBtnText}>{hasApplied ? "Applied" : "Apply Now"}</Text>
         </Pressable>
       </View>
     </Pressable>

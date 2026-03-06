@@ -7,19 +7,28 @@ interface JobContextType {
   saveJob: (job: Job) => void;
   removeJob: (jobId: string) => void; // 👈 Back to string
   isJobSaved: (jobId: string) => boolean; // 👈 Back to string
+
+  appliedJobIds: string[];
+  applyToJob: (jobId: string) => void;
+  hasAppliedToJob: (jobId: string) => boolean;
 }
 
 const JobContext = createContext<JobContextType | undefined>(undefined);
 const SAVED_JOBS_KEY = '@my_saved_jobs';
+const APPLIED_JOBS_KEY = '@my_applied_jobs';
 
 export const JobProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [savedJobs, setSavedJobs] = useState<Job[]>([]);
+  const [appliedJobIds, setAppliedJobIds] = useState<string[]>([]);
 
   useEffect(() => {
     const loadSavedJobs = async () => {
       try {
         const storedJobs = await AsyncStorage.getItem(SAVED_JOBS_KEY);
         if (storedJobs) setSavedJobs(JSON.parse(storedJobs));
+
+        const storedApplied = await AsyncStorage.getItem(APPLIED_JOBS_KEY);
+        if (storedApplied) setAppliedJobIds(JSON.parse(storedApplied));
       } catch (error) {
         console.error('Failed to load saved jobs', error);
       }
@@ -48,8 +57,21 @@ export const JobProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     return savedJobs.some((job) => job.id === jobId);
   };
 
+  const applyToJob = (jobId: string) => {
+    setAppliedJobIds((prevIds) => {
+      if (prevIds.includes(jobId)) return prevIds; // Already applied
+      const updatedIds = [...prevIds, jobId];
+      AsyncStorage.setItem(APPLIED_JOBS_KEY, JSON.stringify(updatedIds));
+      return updatedIds;
+    });
+  };
+
+  const hasAppliedToJob = (jobId: string): boolean => {
+    return appliedJobIds.includes(jobId);
+  };
+  
   return (
-    <JobContext.Provider value={{ savedJobs, saveJob, removeJob, isJobSaved }}>
+    <JobContext.Provider value={{ savedJobs, saveJob, removeJob, isJobSaved, appliedJobIds, applyToJob, hasAppliedToJob }}>
       {children}
     </JobContext.Provider>
   );

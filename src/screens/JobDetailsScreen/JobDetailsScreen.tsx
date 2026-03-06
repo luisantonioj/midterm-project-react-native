@@ -74,11 +74,12 @@ export const JobDetailsScreen: React.FC = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const route = useRoute<RouteProp<RootStackParamList, 'JobDetails'>>();
   const { job } = route.params;
-  const { saveJob, removeJob, isJobSaved } = useJobs();
+  const { saveJob, removeJob, isJobSaved, hasAppliedToJob } = useJobs();
 
   const [activeTab, setActiveTab] = useState<'description' | 'requirements' | 'benefits'>('description');
 
   const isSaved = isJobSaved(job.id);
+  const hasApplied = hasAppliedToJob(job.id);
 
   const handleSaveToggle = () => {
     if (isSaved) removeJob(job.id);
@@ -243,10 +244,12 @@ export const JobDetailsScreen: React.FC = () => {
           iconName={isSaved ? "bookmark" : "bookmark-outline"}
         />
         <Button 
-          title="Apply Now" 
+          title={hasApplied ? "Applied" : "Apply Now"} 
           onPress={handleApply} 
           style={styles.applyButton}
-          iconName="paper-plane-outline"
+          disabled={hasApplied} // Disables the button
+          variant={hasApplied ? "success" : "primary"} // Turns green
+          iconName={hasApplied ? "checkmark-circle" : "paper-plane-outline"} // Swaps the icon
         />
       </View>
     </View>
