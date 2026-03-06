@@ -25,7 +25,7 @@ type JobFinderScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 export const JobFinderScreen: React.FC = () => {
   const navigation = useNavigation<JobFinderScreenNavigationProp>();
   const { colors } = useTheme();
-  const { jobs, loading, error, refreshJobs } = useJobsAPI();
+  const { jobs, loading, isFetchingNextPage, error, refreshJobs, fetchNextPage, hasMore } = useJobsAPI();
   
   // Destructure the new filter hooks
   const { searchQuery, setSearchQuery, filteredJobs, filters, setFilters, removeFilter } = useSearch(jobs);
@@ -96,6 +96,15 @@ export const JobFinderScreen: React.FC = () => {
     </View>
   );
 
+  const renderFooter = () => {
+    if (!isFetchingNextPage) return <View style={{ height: 20 }} />; // Just empty padding if not loading
+    return (
+      <View style={{ paddingVertical: 20, alignItems: 'center' }}>
+        <ActivityIndicator size="small" color={colors.primary} />
+      </View>
+    );
+  };
+
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.header}>
@@ -136,6 +145,9 @@ export const JobFinderScreen: React.FC = () => {
             ListEmptyComponent={renderEmptyComponent}
             refreshControl={<RefreshControl refreshing={loading} onRefresh={refreshJobs} tintColor={colors.primary} />}
             showsVerticalScrollIndicator={false}
+            onEndReached={fetchNextPage} 
+            onEndReachedThreshold={0.5} 
+            ListFooterComponent={renderFooter}
             initialNumToRender={5}      
             maxToRenderPerBatch={5}     
             windowSize={5}             
