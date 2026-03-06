@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import {
   View,
   Text,
@@ -37,13 +37,23 @@ export const JobFinderScreen: React.FC = () => {
   const availableWorkModels = useMemo(() => Array.from(new Set(jobs.map(j => j.workModel).filter(Boolean))) as string[], [jobs]);
   const availableSeniorityLevels = useMemo(() => Array.from(new Set(jobs.map(j => j.seniorityLevel).filter(Boolean))) as string[], [jobs]);
 
-  const handlePressJob = (job: Job) => {
+  const handlePressJob = useCallback((job: Job) => {
     navigation.navigate('JobDetails', { job });
-  };
+  }, [navigation]);
 
-  const handleApply = (job: Job) => {
+  const handleApply = useCallback((job: Job) => {
     navigation.navigate('ApplicationForm', { job, fromSaved: false });
-  };
+  }, [navigation]);
+
+  const renderJobItem = useCallback(({ item }: { item: Job }) => (
+    <JobCard 
+      job={item} 
+      onPress={() => handlePressJob(item)} 
+      onApply={() => handleApply(item)} 
+    />
+  ), [handlePressJob, handleApply]);
+
+  const keyExtractor = useCallback((item: Job) => item.id, []);
 
   const toggleFilter = (category: keyof FilterState, value: string) => {
     if (category === 'sortBy') {
@@ -134,14 +144,8 @@ export const JobFinderScreen: React.FC = () => {
         ) : (
           <FlatList
             data={filteredJobs}
-            renderItem={({ item }) => (
-              <JobCard 
-                job={item} 
-                onPress={() => handlePressJob(item)} 
-                onApply={() => handleApply(item)} 
-              />
-            )}
-            keyExtractor={(item) => item.id}
+            renderItem={renderJobItem}
+            keyExtractor={keyExtractor}
             ListEmptyComponent={renderEmptyComponent}
             refreshControl={<RefreshControl refreshing={loading} onRefresh={refreshJobs} tintColor={colors.primary} />}
             showsVerticalScrollIndicator={false}
