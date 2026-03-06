@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { MainTabNavigator } from './MainTabNavigator';
 import { ApplicationFormScreen } from '../screens/ApplicationFormScreen/ApplicationFormScreen';
@@ -10,14 +10,24 @@ import { useTheme } from '../contexts/ThemeContext';
 const Stack = createStackNavigator<RootStackParamList>();
 
 export const RootNavigator: React.FC = () => {
-  const { colors } = useTheme();
+  const { colors, theme } = useTheme();
+  const isDarkMode = theme === 'dark';
+
+  const navigationTheme = {
+    ...(isDarkMode ? DarkTheme : DefaultTheme),
+    colors: {
+      ...(isDarkMode ? DarkTheme.colors : DefaultTheme.colors),
+      background: colors.background, // This kills the gray flash!
+    },
+  };
 
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={navigationTheme}>
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
           cardStyle: { backgroundColor: colors.background },
+          presentation: 'modal',
         }}
       >
         <Stack.Screen name="MainTabs" component={MainTabNavigator} />
@@ -38,6 +48,7 @@ export const RootNavigator: React.FC = () => {
               fontWeight: 'bold',
             },
             headerBackTitleVisible: false,
+            presentation: 'card', // Use card presentation for JobDetails
           })} 
         />
         
