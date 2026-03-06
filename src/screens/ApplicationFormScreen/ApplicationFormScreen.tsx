@@ -108,7 +108,7 @@ export const ApplicationFormScreen: React.FC = () => {
     setIsSuccessVisible(false);
     setFormData({ name: '', email: '', contactNumber: '', whyHireYou: '' });
     if (fromSaved) {
-      navigation.navigate('MainTabs');
+      navigation.navigate('MainTabs', { screen: 'JobFinder' });
     } else {
       navigation.goBack();
     }
