@@ -8,9 +8,8 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingTop: 60,
-    paddingBottom: 16,
+    paddingHorizontal: 20,
+    paddingBottom: 20,
   },
   title: {
     fontSize: 28,
@@ -18,7 +17,7 @@ export const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: 20,
   },
   count: {
     fontSize: 14,
@@ -42,14 +41,78 @@ export const styles = StyleSheet.create({
   emptySubtext: {
     fontSize: 14,
   },
+
+  // --- Filter Badges ---
+  activeFilterBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 32,               
+    paddingHorizontal: 12,
+    borderRadius: 16,
+    borderWidth: 1,
+    marginRight: 8,
+    marginBottom: 8,
+    maxWidth: 160,
+  },
+
+  // --- Slide-Up Filter Modal Styles ---
   modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-end',
+  },
+  modalContent: {
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    padding: 24,
+    maxHeight: '85%',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  modalTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+  },
+  filterSectionTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    marginTop: 16,
+    marginBottom: 10,
+    textTransform: 'uppercase',
+  },
+  filterOptionsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+  },
+  filterOptionBtn: {
+    justifyContent: 'center',
+    height: 36,              
+    paddingHorizontal: 14,
+    borderRadius: 18,         
+    borderWidth: 1,
+    maxWidth: '100%',
+    alignSelf: 'flex-start',
+  },
+  filterOptionText: {
+    fontSize: 14,
+    fontWeight: '500',
+  },
+
+  // --- Fade-in Remove Modal Styles ---
+  modalOverlayRemove: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
   },
-  modalContent: {
+  modalContentRemove: {
     width: '100%',
     borderRadius: 24,
     padding: 24,
@@ -58,11 +121,6 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 12,
     elevation: 5,
-  },
-  modalTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginBottom: 8,
   },
   modalSubtitle: {
     fontSize: 15,
