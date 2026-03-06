@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   Image,
   Pressable,
   Modal,
+  BackHandler,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
@@ -59,6 +60,20 @@ export const ApplicationFormScreen: React.FC = () => {
     formData.email.trim().length > 0 || 
     formData.contactNumber.trim().length > 0 || 
     formData.whyHireYou.trim().length > 0;
+
+  useEffect(() => {
+    const onBackPress = () => {
+      if (hasUnsavedChanges) {
+        setIsCancelVisible(true);
+        return true; 
+      }
+      return false;
+    };
+
+    const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+    return () => subscription.remove();
+  }, [hasUnsavedChanges]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
