@@ -39,3 +39,9 @@ export const validateContactNumber = (contactNumber: string): string => {
   
   return '';
 };
+
+export const validateWhyHireYou = (text: string): string => {
+  if (!text.trim()) return 'This field is required';
+  if (text.trim().length < 20) return 'Please provide at least 20 characters';
+  return '';
+};

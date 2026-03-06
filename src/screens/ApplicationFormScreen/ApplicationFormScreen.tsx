@@ -14,7 +14,7 @@ import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useTheme } from '../../contexts/ThemeContext';
 import { Button, Input } from '../../components';
-import { validateName, validateEmail, validateContactNumber } from '../../utils/validation';
+import { validateName, validateEmail, validateContactNumber, validateWhyHireYou } from '../../utils/validation';
 import { RootStackParamList } from '../../navigation/types';
 import { styles } from './ApplicationFormScreen.styles';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -44,15 +44,16 @@ export const ApplicationFormScreen: React.FC = () => {
   // Modal States
   const [isConfirmVisible, setIsConfirmVisible] = useState(false);
   const [isSuccessVisible, setIsSuccessVisible] = useState(false);
-  const [isCancelVisible, setIsCancelVisible] = useState(false); // 👈 NEW: Cancel Modal State
+  const [isCancelVisible, setIsCancelVisible] = useState(false); // Cancel Modal State
 
   const nameError = validateName(formData.name);
   const emailError = validateEmail(formData.email);
   const contactError = validateContactNumber(formData.contactNumber);
+  const whyHireYouError = validateWhyHireYou(formData.whyHireYou);
 
-  const isFormValid = !nameError && !emailError && !contactError;
+  const isFormValid = !nameError && !emailError && !contactError && !whyHireYouError;
 
-  // 👈 NEW: Check if there's at least 1 character in any field
+  // Check if there's at least 1 character in any field
   const hasUnsavedChanges = 
     formData.name.trim().length > 0 || 
     formData.email.trim().length > 0 || 
@@ -86,7 +87,7 @@ export const ApplicationFormScreen: React.FC = () => {
   };
 
   const handleInitiateSubmit = () => {
-    setTouched({ name: true, email: true, contactNumber: true });
+    setTouched({ name: true, email: true, contactNumber: true, whyHireYou: true });
     if (!isFormValid) return;
     setIsConfirmVisible(true);
   };
@@ -232,10 +233,12 @@ export const ApplicationFormScreen: React.FC = () => {
           />
 
           <Input
-            label="Why should we hire you? (Optional)"
+            label="Why should we hire you? *"
             placeholder="Tell us about your skills and experience"
             value={formData.whyHireYou}
             onChangeText={(value) => handleInputChange('whyHireYou', value)}
+            onBlur={() => handleBlur('whyHireYou')}
+            error={touched.whyHireYou ? whyHireYouError : ''}
             multiline
             numberOfLines={6}
             style={styles.textArea}
