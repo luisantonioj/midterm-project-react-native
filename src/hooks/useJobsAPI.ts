@@ -10,7 +10,7 @@ interface UseJobsReturn {
   error: string | null;
   refreshJobs: () => void;
   fetchNextPage: () => void;
-  hasMore: boolean; // 
+  hasMore: boolean; 
 }
 
 export const useJobsAPI = (): UseJobsReturn => {
@@ -22,7 +22,6 @@ export const useJobsAPI = (): UseJobsReturn => {
   const [page, setPage] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
 
-  // Use a ref to keep track of seeds so we NEVER get duplicate IDs across pages
   const seenSeeds = useRef<Set<string>>(new Set());
 
   const fetchJobs = async (pageNumber: number = 1, isRefresh: boolean = false) => {
@@ -30,7 +29,7 @@ export const useJobsAPI = (): UseJobsReturn => {
       setLoading(true);
       setPage(1);
       setHasMore(true);
-      seenSeeds.current.clear(); // Reset tracker on refresh
+      seenSeeds.current.clear(); 
     } else {
       setIsFetchingNextPage(true);
     }
@@ -40,7 +39,7 @@ export const useJobsAPI = (): UseJobsReturn => {
     try {
       const response = await fetch(`${API_BASE_URL}?page=${pageNumber}`, {
          headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+          'User-Agent': 'Mozilla/5.0',
           'Accept': 'application/json'
         }
       });
@@ -53,20 +52,20 @@ export const useJobsAPI = (): UseJobsReturn => {
       const apiJobs = data.jobs || []; 
 
       if (apiJobs.length === 0) {
-        setHasMore(false); // No more jobs exist!
+        setHasMore(false); 
       } else {
-        
-        // Array to hold only strictly unique jobs
         const strictlyUniqueJobs: Job[] = [];
+        let newJobsFound = false;
 
         for (const job of apiJobs) {
-          // Create a "Fingerprint" using Title, Company, and Location
           const jobLocations = job.locations ? job.locations.join(',') : 'Remote';
-          const jobFingerprint = `${job.title || 'unknown'}-${job.companyName || 'unknown'}-${jobLocations}`;
           
-          // Only process the job if we have NEVER seen this fingerprint before
+          // Make fingerprint highly specific so legitimate similar roles don't collide
+          const jobFingerprint = `${job.title || 'unknown'}-${job.companyName || 'unknown'}-${jobLocations}-${job.description?.length || 0}`;
+          
           if (!seenSeeds.current.has(jobFingerprint)) {
-            seenSeeds.current.add(jobFingerprint); // Mark as seen
+            seenSeeds.current.add(jobFingerprint); 
+            newJobsFound = true;
 
             strictlyUniqueJobs.push({
               id: generateUUID(jobFingerprint), 
@@ -89,14 +88,26 @@ export const useJobsAPI = (): UseJobsReturn => {
           }
         }
 
+        // Stop the 429 Loop! If the API just returned data we already saw, shut it down.
+        if (!newJobsFound && !isRefresh) {
+            setHasMore(false);
+        }
+
         if (isRefresh) {
-          setJobs(strictlyUniqueJobs); // Replace list
-        } else {
-          setJobs(prev => [...prev, ...strictlyUniqueJobs]); // Append to bottom of list
+          setJobs(strictlyUniqueJobs); 
+        } else if (newJobsFound) {
+          // Stop the React Duplicate Key Crash! Final safety check before appending.
+          setJobs(prev => {
+            const existingIds = new Set(prev.map(j => j.id));
+            const safeNewJobs = strictlyUniqueJobs.filter(j => !existingIds.has(j.id));
+            return [...prev, ...safeNewJobs];
+          });
         }
       }
     } catch (err) {
       console.error('Fetch error:', err);
+      // Immediately kill the infinite loop if the API throws an error
+      setHasMore(false); 
     } finally {
       setLoading(false);
       setIsFetchingNextPage(false);
@@ -108,7 +119,6 @@ export const useJobsAPI = (): UseJobsReturn => {
   }, []);
 
   const fetchNextPage = useCallback(() => {
-    // Only fetch if we aren't already fetching, and if the API still has more data
     if (!loading && !isFetchingNextPage && hasMore) {
       const nextPage = page + 1;
       setPage(nextPage);
