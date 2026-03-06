@@ -71,7 +71,7 @@ export const ApplicationFormScreen: React.FC = () => {
     setTouched((prev) => ({ ...prev, [field]: true }));
   };
 
-  // 👈 NEW: Handle the 'X' Close Button Press
+  // Handle the 'X' Close Button Press
   const handleClosePress = () => {
     if (hasUnsavedChanges) {
       setIsCancelVisible(true); // Show warning
@@ -80,7 +80,7 @@ export const ApplicationFormScreen: React.FC = () => {
     }
   };
 
-  // 👈 NEW: Actually discard and leave
+  // Actually discard and leave
   const handleDiscardChanges = () => {
     setIsCancelVisible(false);
     navigation.goBack();
@@ -124,28 +124,27 @@ export const ApplicationFormScreen: React.FC = () => {
       style={[styles.container, { backgroundColor: colors.background }]}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
+      <View style={[styles.fixedHeader, { backgroundColor: colors.background, paddingTop: insets.top + 10 }]}>
+        <Text style={[styles.title, { color: colors.text }]}>Apply for Job</Text>
+        <Pressable 
+          onPress={handleClosePress}
+          style={({ pressed }) => [styles.closeBtn, pressed && { opacity: 0.6 }]}
+        >
+          <Ionicons name="close-circle" size={28} color={colors.textSecondary} />
+        </Pressable>
+      </View>
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={[
           styles.scrollContent, 
           { 
-            paddingTop: insets.top + 20, 
+            paddingTop: 10, 
             paddingBottom: insets.bottom + 5
           }
         ]}
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.header}>
-          <View style={styles.headerRow}>
-            <Text style={[styles.title, { color: colors.text }]}>Apply for Job</Text>
-            <Pressable 
-              onPress={handleClosePress} // 👈 Use the new handler here
-              style={({ pressed }) => [styles.closeBtn, pressed && { opacity: 0.6 }]}
-            >
-              <Ionicons name="close-circle" size={28} color={colors.textSecondary} />
-            </Pressable>
-          </View>
-
           <View style={[styles.summaryCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
             <View style={styles.summaryHeader}>
               <Image 

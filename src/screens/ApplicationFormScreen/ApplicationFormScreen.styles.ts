@@ -4,6 +4,14 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  fixedHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 16, 
+    paddingBottom: 16,
+    zIndex: 10, 
+  },
   scrollView: {
     flex: 1,
   },
