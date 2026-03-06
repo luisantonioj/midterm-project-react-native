@@ -120,7 +120,7 @@ export const SavedJobsScreen: React.FC = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <View style={[styles.header, { paddingTop: insets.top + 10 }]}> 
+      <View style={[styles.header, { paddingTop: insets.top + 20 }]}> 
         <Text style={[styles.title, { color: colors.text }]}>Saved Jobs</Text>
         <ThemeToggle />
       </View>
@@ -138,7 +138,7 @@ export const SavedJobsScreen: React.FC = () => {
           </>
         )}
 
-        <Text style={[styles.count, { color: colors.textSecondary }]}>
+        <Text style={[styles.resultsCount, { color: colors.textSecondary }]}>
           {filteredJobs.length} {filteredJobs.length === 1 ? 'job' : 'jobs'} saved
         </Text>
 

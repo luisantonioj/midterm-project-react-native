@@ -4,45 +4,52 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  // 👇 1. Synced with JobFinderScreen exactly
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingBottom: 20,
+    paddingHorizontal: 16, // Changed from 20
+    paddingTop: 60,        // Re-added if JobFinder has it (depending on your SafeArea setup)
+    paddingBottom: 16,     // Changed from 20
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
   },
+  // 👇 2. Synced with JobFinderScreen exactly
   content: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: 16, // Changed from 20
   },
-  count: {
+  // 👇 3. Renamed to match JobFinder's class naming and spacing
+  resultsCount: {
     fontSize: 14,
     marginBottom: 12,
   },
+  // 👇 4. Kept the custom Empty state but adjusted padding
   emptyContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 64,
+    paddingVertical: 32, // Changed to match JobFinder
   },
   emptyIcon: {
     fontSize: 64,
     marginBottom: 16,
   },
   emptyText: {
-    fontSize: 18,
+    fontSize: 16, // Changed from 18 to match JobFinder
+    textAlign: 'center', // Added to match JobFinder
     fontWeight: '600',
     marginBottom: 8,
   },
   emptySubtext: {
     fontSize: 14,
+    textAlign: 'center',
   },
 
-  // --- Filter Badges ---
+  // --- Filter Badges (Already matched) ---
   activeFilterBadge: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -56,7 +63,7 @@ export const styles = StyleSheet.create({
     maxWidth: 160,
   },
 
-  // --- Slide-Up Filter Modal Styles ---
+  // --- Slide-Up Filter Modal Styles (Already matched) ---
   modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -104,7 +111,7 @@ export const styles = StyleSheet.create({
     fontWeight: '500',
   },
 
-  // --- Fade-in Remove Modal Styles ---
+  // --- Fade-in Remove Modal Styles (Specific to Saved Jobs) ---
   modalOverlayRemove: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.5)',
